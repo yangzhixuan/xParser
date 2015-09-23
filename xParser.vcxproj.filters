@@ -1,0 +1,378 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="源文件">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="头文件">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="资源文件">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="头文件\utils">
+      <UniqueIdentifier>{c1b0c77b-745d-4064-bc4f-7a22fcf4a1d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\include">
+      <UniqueIdentifier>{82f205bb-0d54-4657-a22e-9123355ccced}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\include\learning">
+      <UniqueIdentifier>{28a6db82-59c9-4399-9e43-b394679f5c40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\include\learning\perceptron">
+      <UniqueIdentifier>{73b1f8e0-5758-4dcb-b20d-8f9e6ce63cbe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\include">
+      <UniqueIdentifier>{c7a5c73b-1aa4-4181-99f0-683427314726}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\include\learning">
+      <UniqueIdentifier>{8d914655-69cc-4228-8c36-2f2f1c9a3f2e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\include\learning\perceptron">
+      <UniqueIdentifier>{56a48857-b111-4d2a-989d-09bdd1be7cae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\common">
+      <UniqueIdentifier>{cbc90c81-a8a7-48a5-a946-4b477265cb82}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\common\token">
+      <UniqueIdentifier>{0717d345-cf55-4b24-ab6b-38c816611a24}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\common">
+      <UniqueIdentifier>{8687d4ac-b32d-4de8-a297-f7d1f5940296}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\common\token">
+      <UniqueIdentifier>{184563b5-ce3c-49ee-a9c7-62780f6bd489}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\common\parser">
+      <UniqueIdentifier>{5f80e17c-1b14-41c0-944c-23a8569064ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\common\parser\implementations">
+      <UniqueIdentifier>{02dc27b7-be02-440b-8d8b-eb8fd9cfbcdd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\common\parser\implementations\eisner">
+      <UniqueIdentifier>{3833827c-d559-43df-bd74-9ba9d6e1d9bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\common\parser">
+      <UniqueIdentifier>{c86470c1-abf9-427e-b10a-15deb68d4bb8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\common\parser\implementations">
+      <UniqueIdentifier>{d53cee6f-228b-4313-a03a-9219fdec6b75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\common\parser\implementations\eisner">
+      <UniqueIdentifier>{ad886d20-4061-4a36-8ddf-8428ba67ae67}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\common\parser\implementations\emptyeisner">
+      <UniqueIdentifier>{43678bfe-25f7-4f96-959d-d5c4de576af5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\common\parser\implementations\emptyeisner">
+      <UniqueIdentifier>{bdc99c46-1245-49fa-848a-d278c5e78b58}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\common\parser\implementations\eisner3rd">
+      <UniqueIdentifier>{846191b5-252f-4a8f-b2cf-7c0c207d2ecc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\common\parser\implementations\eisner3rd">
+      <UniqueIdentifier>{efce8565-808d-4ad0-a4c0-1b2fc8790087}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\include\learning\svm">
+      <UniqueIdentifier>{0ca8b61b-191a-4367-9298-25e389f57471}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\common\parser\implementations\arceager">
+      <UniqueIdentifier>{113332e7-1a09-452d-90f1-283a3e887ff8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\common\parser\implementations\arceager">
+      <UniqueIdentifier>{bc326b38-8e5c-47c5-a244-720b9bd3d405}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\common\parser\implementations\eisnergc">
+      <UniqueIdentifier>{a624c405-7775-42e4-bedf-55a0327568f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\common\parser\implementations\eisnergc">
+      <UniqueIdentifier>{8e6854f0-1b86-46e1-96aa-72de209356b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\common\parser\implementations\eisnergc3rd">
+      <UniqueIdentifier>{2fb59032-17ed-4163-a7bb-2997ff2cfc56}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\common\parser\implementations\eisnergc3rd">
+      <UniqueIdentifier>{f15e4324-7c0d-4081-8e71-073e19ab43fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\common\parser\implementations\emptyeisnergc3rd">
+      <UniqueIdentifier>{40c22547-f6bc-4eee-a2f7-3765e45cb671}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\common\parser\implementations\emptyeisnergc3rd">
+      <UniqueIdentifier>{04d7e2ee-83c3-4d67-83f3-fe24260a9962}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\learning\perceptron\score.h">
+      <Filter>头文件\include\learning\perceptron</Filter>
+    </ClInclude>
+    <ClInclude Include="common\token\token.h">
+      <Filter>头文件\common\token</Filter>
+    </ClInclude>
+    <ClInclude Include="common\token\word.h">
+      <Filter>头文件\common\token</Filter>
+    </ClInclude>
+    <ClInclude Include="common\token\pos.h">
+      <Filter>头文件\common\token</Filter>
+    </ClInclude>
+    <ClInclude Include="common\token\emp.h">
+      <Filter>头文件\common\token</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ngram.h">
+      <Filter>头文件\include</Filter>
+    </ClInclude>
+    <ClInclude Include="common\parser\weight_base.h">
+      <Filter>头文件\common\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="include\learning\perceptron\packed_score.h">
+      <Filter>头文件\include\learning\perceptron</Filter>
+    </ClInclude>
+    <ClInclude Include="common\parser\depparser_base.h">
+      <Filter>头文件\common\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="common\parser\macros_base.h">
+      <Filter>头文件\common\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="common\parser\run_base.h">
+      <Filter>头文件\common\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="common\parser\agenda.h">
+      <Filter>头文件\common\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="common\parser\implementations\eisner\eisner_depparser.h">
+      <Filter>头文件\common\parser\implementations\eisner</Filter>
+    </ClInclude>
+    <ClInclude Include="common\parser\implementations\eisner\eisner_macros.h">
+      <Filter>头文件\common\parser\implementations\eisner</Filter>
+    </ClInclude>
+    <ClInclude Include="common\parser\implementations\eisner\eisner_run.h">
+      <Filter>头文件\common\parser\implementations\eisner</Filter>
+    </ClInclude>
+    <ClInclude Include="common\parser\implementations\eisner\eisner_state.h">
+      <Filter>头文件\common\parser\implementations\eisner</Filter>
+    </ClInclude>
+    <ClInclude Include="common\parser\implementations\eisner\eisner_weight.h">
+      <Filter>头文件\common\parser\implementations\eisner</Filter>
+    </ClInclude>
+    <ClInclude Include="common\parser\implementations\emptyeisner\emptyeisner_depparser.h">
+      <Filter>头文件\common\parser\implementations\emptyeisner</Filter>
+    </ClInclude>
+    <ClInclude Include="common\parser\implementations\emptyeisner\emptyeisner_macros.h">
+      <Filter>头文件\common\parser\implementations\emptyeisner</Filter>
+    </ClInclude>
+    <ClInclude Include="common\parser\implementations\emptyeisner\emptyeisner_state.h">
+      <Filter>头文件\common\parser\implementations\emptyeisner</Filter>
+    </ClInclude>
+    <ClInclude Include="common\parser\implementations\emptyeisner\emptyeisner_weight.h">
+      <Filter>头文件\common\parser\implementations\emptyeisner</Filter>
+    </ClInclude>
+    <ClInclude Include="common\parser\implementations\emptyeisner\emptyeisner_run.h">
+      <Filter>头文件\common\parser\implementations\emptyeisner</Filter>
+    </ClInclude>
+    <ClInclude Include="common\parser\implementations\eisner3rd\eisner3rd_depparser.h">
+      <Filter>头文件\common\parser\implementations\eisner3rd</Filter>
+    </ClInclude>
+    <ClInclude Include="common\parser\implementations\eisner3rd\eisner3rd_macros.h">
+      <Filter>头文件\common\parser\implementations\eisner3rd</Filter>
+    </ClInclude>
+    <ClInclude Include="common\parser\implementations\eisner3rd\eisner3rd_run.h">
+      <Filter>头文件\common\parser\implementations\eisner3rd</Filter>
+    </ClInclude>
+    <ClInclude Include="common\parser\implementations\eisner3rd\eisner3rd_state.h">
+      <Filter>头文件\common\parser\implementations\eisner3rd</Filter>
+    </ClInclude>
+    <ClInclude Include="common\parser\implementations\eisner3rd\eisner3rd_weight.h">
+      <Filter>头文件\common\parser\implementations\eisner3rd</Filter>
+    </ClInclude>
+    <ClInclude Include="include\learning\svm\smo.h">
+      <Filter>头文件\include\learning\svm</Filter>
+    </ClInclude>
+    <ClInclude Include="include\learning\svm\svm_macros.h">
+      <Filter>头文件\include\learning\svm</Filter>
+    </ClInclude>
+    <ClInclude Include="common\parser\implementations\arceager\arceager_macros.h">
+      <Filter>头文件\common\parser\implementations\arceager</Filter>
+    </ClInclude>
+    <ClInclude Include="common\parser\implementations\arceager\arceager_state.h">
+      <Filter>头文件\common\parser\implementations\arceager</Filter>
+    </ClInclude>
+    <ClInclude Include="common\parser\implementations\eisnergc\eisnergc_macros.h">
+      <Filter>头文件\common\parser\implementations\eisnergc</Filter>
+    </ClInclude>
+    <ClInclude Include="common\parser\implementations\eisnergc\eisnergc_state.h">
+      <Filter>头文件\common\parser\implementations\eisnergc</Filter>
+    </ClInclude>
+    <ClInclude Include="common\parser\implementations\eisnergc\eisnergc_weight.h">
+      <Filter>头文件\common\parser\implementations\eisnergc</Filter>
+    </ClInclude>
+    <ClInclude Include="common\parser\implementations\eisnergc\eisnergc_depparser.h">
+      <Filter>头文件\common\parser\implementations\eisnergc</Filter>
+    </ClInclude>
+    <ClInclude Include="common\parser\implementations\eisnergc\eisnergc_run.h">
+      <Filter>头文件\common\parser\implementations\eisnergc</Filter>
+    </ClInclude>
+    <ClInclude Include="common\parser\implementations\eisnergc3rd\eisnergc3rd_macros.h">
+      <Filter>头文件\common\parser\implementations\eisnergc3rd</Filter>
+    </ClInclude>
+    <ClInclude Include="common\parser\implementations\eisnergc3rd\eisnergc3rd_weight.h">
+      <Filter>头文件\common\parser\implementations\eisnergc3rd</Filter>
+    </ClInclude>
+    <ClInclude Include="common\parser\implementations\eisnergc3rd\eisnergc3rd_state.h">
+      <Filter>头文件\common\parser\implementations\eisnergc3rd</Filter>
+    </ClInclude>
+    <ClInclude Include="common\parser\implementations\eisnergc3rd\eisnergc3rd_depparser.h">
+      <Filter>头文件\common\parser\implementations\eisnergc3rd</Filter>
+    </ClInclude>
+    <ClInclude Include="common\parser\implementations\eisnergc3rd\eisnergc3rd_run.h">
+      <Filter>头文件\common\parser\implementations\eisnergc3rd</Filter>
+    </ClInclude>
+    <ClInclude Include="common\parser\implementations\emptyeisnergc3rd\emptyeisnergc3rd_depparser.h">
+      <Filter>头文件\common\parser\implementations\emptyeisnergc3rd</Filter>
+    </ClInclude>
+    <ClInclude Include="common\parser\implementations\emptyeisnergc3rd\emptyeisnergc3rd_macros.h">
+      <Filter>头文件\common\parser\implementations\emptyeisnergc3rd</Filter>
+    </ClInclude>
+    <ClInclude Include="common\parser\implementations\emptyeisnergc3rd\emptyeisnergc3rd_run.h">
+      <Filter>头文件\common\parser\implementations\emptyeisnergc3rd</Filter>
+    </ClInclude>
+    <ClInclude Include="common\parser\implementations\emptyeisnergc3rd\emptyeisnergc3rd_state.h">
+      <Filter>头文件\common\parser\implementations\emptyeisnergc3rd</Filter>
+    </ClInclude>
+    <ClInclude Include="common\parser\implementations\emptyeisnergc3rd\emptyeisnergc3rd_weight.h">
+      <Filter>头文件\common\parser\implementations\emptyeisnergc3rd</Filter>
+    </ClInclude>
+    <ClInclude Include="common\token\deplabel.h">
+      <Filter>头文件\common\token</Filter>
+    </ClInclude>
+    <ClInclude Include="common\parser\implementations\arceager\arceager_weight.h">
+      <Filter>头文件\common\parser\implementations\arceager</Filter>
+    </ClInclude>
+    <ClInclude Include="common\parser\implementations\arceager\arceager_depparser.h">
+      <Filter>头文件\common\parser\implementations\arceager</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="include\learning\perceptron\score.cpp">
+      <Filter>源文件\include\learning\perceptron</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="common\token\token.cpp">
+      <Filter>源文件\common\token</Filter>
+    </ClCompile>
+    <ClCompile Include="common\token\word.cpp">
+      <Filter>源文件\common\token</Filter>
+    </ClCompile>
+    <ClCompile Include="common\token\pos.cpp">
+      <Filter>源文件\common\token</Filter>
+    </ClCompile>
+    <ClCompile Include="common\token\emp.cpp">
+      <Filter>源文件\common\token</Filter>
+    </ClCompile>
+    <ClCompile Include="common\parser\macros_base.cpp">
+      <Filter>源文件\common\parser</Filter>
+    </ClCompile>
+    <ClCompile Include="common\parser\implementations\eisner\eisner_depparser.cpp">
+      <Filter>源文件\common\parser\implementations\eisner</Filter>
+    </ClCompile>
+    <ClCompile Include="common\parser\implementations\eisner\eisner_run.cpp">
+      <Filter>源文件\common\parser\implementations\eisner</Filter>
+    </ClCompile>
+    <ClCompile Include="common\parser\implementations\eisner\eisner_state.cpp">
+      <Filter>源文件\common\parser\implementations\eisner</Filter>
+    </ClCompile>
+    <ClCompile Include="common\parser\implementations\eisner\eisner_weight.cpp">
+      <Filter>源文件\common\parser\implementations\eisner</Filter>
+    </ClCompile>
+    <ClCompile Include="common\parser\implementations\emptyeisner\emptyeisner_depparser.cpp">
+      <Filter>源文件\common\parser\implementations\emptyeisner</Filter>
+    </ClCompile>
+    <ClCompile Include="common\parser\implementations\emptyeisner\emptyeisner_state.cpp">
+      <Filter>源文件\common\parser\implementations\emptyeisner</Filter>
+    </ClCompile>
+    <ClCompile Include="common\parser\implementations\emptyeisner\emptyeisner_weight.cpp">
+      <Filter>源文件\common\parser\implementations\emptyeisner</Filter>
+    </ClCompile>
+    <ClCompile Include="common\parser\implementations\emptyeisner\emptyeisner_run.cpp">
+      <Filter>源文件\common\parser\implementations\emptyeisner</Filter>
+    </ClCompile>
+    <ClCompile Include="common\parser\implementations\eisner\eisner_macros.cpp">
+      <Filter>源文件\common\parser\implementations\eisner</Filter>
+    </ClCompile>
+    <ClCompile Include="common\parser\implementations\emptyeisner\emptyeisner_macros.cpp">
+      <Filter>源文件\common\parser\implementations\emptyeisner</Filter>
+    </ClCompile>
+    <ClCompile Include="common\parser\implementations\eisner3rd\eisner3rd_depparser.cpp">
+      <Filter>源文件\common\parser\implementations\eisner3rd</Filter>
+    </ClCompile>
+    <ClCompile Include="common\parser\implementations\eisner3rd\eisner3rd_macros.cpp">
+      <Filter>源文件\common\parser\implementations\eisner3rd</Filter>
+    </ClCompile>
+    <ClCompile Include="common\parser\implementations\eisner3rd\eisner3rd_run.cpp">
+      <Filter>源文件\common\parser\implementations\eisner3rd</Filter>
+    </ClCompile>
+    <ClCompile Include="common\parser\implementations\eisner3rd\eisner3rd_state.cpp">
+      <Filter>源文件\common\parser\implementations\eisner3rd</Filter>
+    </ClCompile>
+    <ClCompile Include="common\parser\implementations\eisner3rd\eisner3rd_weight.cpp">
+      <Filter>源文件\common\parser\implementations\eisner3rd</Filter>
+    </ClCompile>
+    <ClCompile Include="common\parser\implementations\arceager\arceager_state.cpp">
+      <Filter>源文件\common\parser\implementations\arceager</Filter>
+    </ClCompile>
+    <ClCompile Include="common\parser\implementations\eisnergc\eisnergc_state.cpp">
+      <Filter>源文件\common\parser\implementations\eisnergc</Filter>
+    </ClCompile>
+    <ClCompile Include="common\parser\implementations\eisnergc\eisnergc_depparser.cpp">
+      <Filter>源文件\common\parser\implementations\eisnergc</Filter>
+    </ClCompile>
+    <ClCompile Include="common\parser\implementations\eisnergc\eisnergc_macros.cpp">
+      <Filter>源文件\common\parser\implementations\eisnergc</Filter>
+    </ClCompile>
+    <ClCompile Include="common\parser\implementations\eisnergc\eisnergc_run.cpp">
+      <Filter>源文件\common\parser\implementations\eisnergc</Filter>
+    </ClCompile>
+    <ClCompile Include="common\parser\implementations\eisnergc\eisnergc_weight.cpp">
+      <Filter>源文件\common\parser\implementations\eisnergc</Filter>
+    </ClCompile>
+    <ClCompile Include="common\parser\implementations\eisnergc3rd\eisnergc3rd_depparser.cpp">
+      <Filter>源文件\common\parser\implementations\eisnergc3rd</Filter>
+    </ClCompile>
+    <ClCompile Include="common\parser\implementations\eisnergc3rd\eisnergc3rd_weight.cpp">
+      <Filter>源文件\common\parser\implementations\eisnergc3rd</Filter>
+    </ClCompile>
+    <ClCompile Include="common\parser\implementations\eisnergc3rd\eisnergc3rd_macros.cpp">
+      <Filter>源文件\common\parser\implementations\eisnergc3rd</Filter>
+    </ClCompile>
+    <ClCompile Include="common\parser\implementations\eisnergc3rd\eisnergc3rd_state.cpp">
+      <Filter>源文件\common\parser\implementations\eisnergc3rd</Filter>
+    </ClCompile>
+    <ClCompile Include="common\parser\implementations\eisnergc3rd\eisnergc3rd_run.cpp">
+      <Filter>源文件\common\parser\implementations\eisnergc3rd</Filter>
+    </ClCompile>
+    <ClCompile Include="common\parser\implementations\emptyeisnergc3rd\emptyeisnergc3rd_depparser.cpp">
+      <Filter>源文件\common\parser\implementations\emptyeisnergc3rd</Filter>
+    </ClCompile>
+    <ClCompile Include="common\parser\implementations\emptyeisnergc3rd\emptyeisnergc3rd_macros.cpp">
+      <Filter>源文件\common\parser\implementations\emptyeisnergc3rd</Filter>
+    </ClCompile>
+    <ClCompile Include="common\parser\implementations\emptyeisnergc3rd\emptyeisnergc3rd_run.cpp">
+      <Filter>源文件\common\parser\implementations\emptyeisnergc3rd</Filter>
+    </ClCompile>
+    <ClCompile Include="common\parser\implementations\emptyeisnergc3rd\emptyeisnergc3rd_state.cpp">
+      <Filter>源文件\common\parser\implementations\emptyeisnergc3rd</Filter>
+    </ClCompile>
+    <ClCompile Include="common\parser\implementations\emptyeisnergc3rd\emptyeisnergc3rd_weight.cpp">
+      <Filter>源文件\common\parser\implementations\emptyeisnergc3rd</Filter>
+    </ClCompile>
+    <ClCompile Include="common\token\deplabel.cpp">
+      <Filter>源文件\common\token</Filter>
+    </ClCompile>
+    <ClCompile Include="common\parser\implementations\arceager\arceager_weight.cpp">
+      <Filter>源文件\common\parser\implementations\arceager</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

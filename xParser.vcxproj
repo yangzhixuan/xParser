@@ -1,0 +1,245 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{E1358799-05F2-461C-9F26-503E47FC9516}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>xParser</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>C:\Program Files (x86)\Visual Leak Detector\include;$(SolutionDir)\xParser;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>C:\Program Files (x86)\Visual Leak Detector\include;$(SolutionDir)\xParser;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>C:\Program Files (x86)\Visual Leak Detector\include;$(SolutionDir)\xParser\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>C:\Program Files (x86)\Visual Leak Detector\include;$(SolutionDir)\xParser\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="common\parser\agenda.h" />
+    <ClInclude Include="common\parser\depparser_base.h" />
+    <ClInclude Include="common\parser\implementations\arceager\arceager_depparser.h" />
+    <ClInclude Include="common\parser\implementations\arceager\arceager_macros.h" />
+    <ClInclude Include="common\parser\implementations\arceager\arceager_state.h" />
+    <ClInclude Include="common\parser\implementations\arceager\arceager_weight.h" />
+    <ClInclude Include="common\parser\implementations\eisner3rd\eisner3rd_depparser.h" />
+    <ClInclude Include="common\parser\implementations\eisner3rd\eisner3rd_macros.h" />
+    <ClInclude Include="common\parser\implementations\eisner3rd\eisner3rd_run.h" />
+    <ClInclude Include="common\parser\implementations\eisner3rd\eisner3rd_state.h" />
+    <ClInclude Include="common\parser\implementations\eisner3rd\eisner3rd_weight.h" />
+    <ClInclude Include="common\parser\implementations\eisnergc3rd\eisnergc3rd_depparser.h" />
+    <ClInclude Include="common\parser\implementations\eisnergc3rd\eisnergc3rd_macros.h" />
+    <ClInclude Include="common\parser\implementations\eisnergc3rd\eisnergc3rd_run.h" />
+    <ClInclude Include="common\parser\implementations\eisnergc3rd\eisnergc3rd_state.h" />
+    <ClInclude Include="common\parser\implementations\eisnergc3rd\eisnergc3rd_weight.h" />
+    <ClInclude Include="common\parser\implementations\eisnergc\eisnergc_depparser.h" />
+    <ClInclude Include="common\parser\implementations\eisnergc\eisnergc_macros.h" />
+    <ClInclude Include="common\parser\implementations\eisnergc\eisnergc_run.h" />
+    <ClInclude Include="common\parser\implementations\eisnergc\eisnergc_state.h" />
+    <ClInclude Include="common\parser\implementations\eisnergc\eisnergc_weight.h" />
+    <ClInclude Include="common\parser\implementations\eisner\eisner_depparser.h" />
+    <ClInclude Include="common\parser\implementations\eisner\eisner_macros.h" />
+    <ClInclude Include="common\parser\implementations\eisner\eisner_run.h" />
+    <ClInclude Include="common\parser\implementations\eisner\eisner_state.h" />
+    <ClInclude Include="common\parser\implementations\eisner\eisner_weight.h" />
+    <ClInclude Include="common\parser\implementations\emptyeisnergc3rd\emptyeisnergc3rd_depparser.h" />
+    <ClInclude Include="common\parser\implementations\emptyeisnergc3rd\emptyeisnergc3rd_macros.h" />
+    <ClInclude Include="common\parser\implementations\emptyeisnergc3rd\emptyeisnergc3rd_run.h" />
+    <ClInclude Include="common\parser\implementations\emptyeisnergc3rd\emptyeisnergc3rd_state.h" />
+    <ClInclude Include="common\parser\implementations\emptyeisnergc3rd\emptyeisnergc3rd_weight.h" />
+    <ClInclude Include="common\parser\implementations\emptyeisner\emptyeisner_depparser.h" />
+    <ClInclude Include="common\parser\implementations\emptyeisner\emptyeisner_macros.h" />
+    <ClInclude Include="common\parser\implementations\emptyeisner\emptyeisner_state.h" />
+    <ClInclude Include="common\parser\implementations\emptyeisner\emptyeisner_weight.h" />
+    <ClInclude Include="common\parser\implementations\emptyeisner\emptyeisner_run.h" />
+    <ClInclude Include="common\parser\macros_base.h" />
+    <ClInclude Include="common\parser\run_base.h" />
+    <ClInclude Include="common\parser\weight_base.h" />
+    <ClInclude Include="common\token\deplabel.h" />
+    <ClInclude Include="common\token\emp.h" />
+    <ClInclude Include="common\token\pos.h" />
+    <ClInclude Include="common\token\token.h" />
+    <ClInclude Include="common\token\word.h" />
+    <ClInclude Include="include\learning\perceptron\packed_score.h" />
+    <ClInclude Include="include\learning\perceptron\score.h" />
+    <ClInclude Include="include\learning\svm\smo.h" />
+    <ClInclude Include="include\learning\svm\svm_macros.h" />
+    <ClInclude Include="include\ngram.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="common\parser\implementations\arceager\arceager_state.cpp" />
+    <ClCompile Include="common\parser\implementations\arceager\arceager_weight.cpp" />
+    <ClCompile Include="common\parser\implementations\eisner3rd\eisner3rd_depparser.cpp" />
+    <ClCompile Include="common\parser\implementations\eisner3rd\eisner3rd_macros.cpp" />
+    <ClCompile Include="common\parser\implementations\eisner3rd\eisner3rd_run.cpp" />
+    <ClCompile Include="common\parser\implementations\eisner3rd\eisner3rd_state.cpp" />
+    <ClCompile Include="common\parser\implementations\eisner3rd\eisner3rd_weight.cpp" />
+    <ClCompile Include="common\parser\implementations\eisnergc3rd\eisnergc3rd_depparser.cpp" />
+    <ClCompile Include="common\parser\implementations\eisnergc3rd\eisnergc3rd_macros.cpp" />
+    <ClCompile Include="common\parser\implementations\eisnergc3rd\eisnergc3rd_run.cpp" />
+    <ClCompile Include="common\parser\implementations\eisnergc3rd\eisnergc3rd_state.cpp" />
+    <ClCompile Include="common\parser\implementations\eisnergc3rd\eisnergc3rd_weight.cpp" />
+    <ClCompile Include="common\parser\implementations\eisnergc\eisnergc_depparser.cpp" />
+    <ClCompile Include="common\parser\implementations\eisnergc\eisnergc_macros.cpp" />
+    <ClCompile Include="common\parser\implementations\eisnergc\eisnergc_run.cpp" />
+    <ClCompile Include="common\parser\implementations\eisnergc\eisnergc_state.cpp" />
+    <ClCompile Include="common\parser\implementations\eisnergc\eisnergc_weight.cpp" />
+    <ClCompile Include="common\parser\implementations\eisner\eisner_depparser.cpp" />
+    <ClCompile Include="common\parser\implementations\eisner\eisner_macros.cpp" />
+    <ClCompile Include="common\parser\implementations\eisner\eisner_run.cpp" />
+    <ClCompile Include="common\parser\implementations\eisner\eisner_state.cpp" />
+    <ClCompile Include="common\parser\implementations\eisner\eisner_weight.cpp" />
+    <ClCompile Include="common\parser\implementations\emptyeisnergc3rd\emptyeisnergc3rd_depparser.cpp" />
+    <ClCompile Include="common\parser\implementations\emptyeisnergc3rd\emptyeisnergc3rd_macros.cpp" />
+    <ClCompile Include="common\parser\implementations\emptyeisnergc3rd\emptyeisnergc3rd_run.cpp" />
+    <ClCompile Include="common\parser\implementations\emptyeisnergc3rd\emptyeisnergc3rd_state.cpp" />
+    <ClCompile Include="common\parser\implementations\emptyeisnergc3rd\emptyeisnergc3rd_weight.cpp" />
+    <ClCompile Include="common\parser\implementations\emptyeisner\emptyeisner_depparser.cpp" />
+    <ClCompile Include="common\parser\implementations\emptyeisner\emptyeisner_macros.cpp" />
+    <ClCompile Include="common\parser\implementations\emptyeisner\emptyeisner_run.cpp" />
+    <ClCompile Include="common\parser\implementations\emptyeisner\emptyeisner_state.cpp" />
+    <ClCompile Include="common\parser\implementations\emptyeisner\emptyeisner_weight.cpp" />
+    <ClCompile Include="common\parser\macros_base.cpp" />
+    <ClCompile Include="common\token\deplabel.cpp" />
+    <ClCompile Include="common\token\emp.cpp" />
+    <ClCompile Include="common\token\pos.cpp" />
+    <ClCompile Include="common\token\token.cpp" />
+    <ClCompile Include="common\token\word.cpp" />
+    <ClCompile Include="include\learning\perceptron\score.cpp" />
+    <ClCompile Include="main.cpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
