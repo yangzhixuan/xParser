@@ -22,7 +22,7 @@ typedef PackedScoreMap<WordPOSTagPOSTagInt> WordPOSTagPOSTagIntMap;
 typedef PackedScoreMap<POSTagSet4Int> POSTagSet4IntMap;
 typedef PackedScoreMap<WordWordPOSTagPOSTagInt> WordWordPOSTagPOSTagIntMap;
 
-namespace titovdp{
+namespace titovdp {
     class Weight : public WeightBase {
     public:
         // Naming convention:
@@ -71,10 +71,13 @@ namespace titovdp{
         ThreeWordsIntMap S0wS1wB0w[NUM_TRANSITION_TYPES];
     public:
         void loadScores();
+
         void saveScores() const;
-        void computeAverageFeatureWeights(const int & round);
+
+        void computeAverageFeatureWeights(const int &round);
 
         Weight(const std::string &sInput, const std::string &sRecord);
+
         ~Weight();
     };
 }

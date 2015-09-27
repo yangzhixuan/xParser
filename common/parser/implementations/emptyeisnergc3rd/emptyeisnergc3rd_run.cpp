@@ -8,95 +8,100 @@
 #include "emptyeisnergc3rd_depparser.h"
 
 namespace emptyeisnergc3rd {
-	Run::Run() = default;
+    Run::Run() = default;
 
-	Run::~Run() = default;
+    Run::~Run() = default;
 
-	void Run::train(const std::string & sInputFile, const std::string & sFeatureInput, const std::string & sFeatureOutput) const {
-		int nRound = 0;
-		DependencyTree ref_sent;
+    void Run::train(const std::string &sInputFile, const std::string &sFeatureInput,
+                    const std::string &sFeatureOutput) const {
+        int nRound = 0;
+        DependencyTree ref_sent;
 
-		std::cout << "Training iteration is started..." << std::endl;
+        std::cout << "Training iteration is started..." << std::endl;
 
-		auto time_begin = time(NULL);
+        auto time_begin = time(NULL);
 
-		std::unique_ptr<DepParser> parser(new DepParser(sFeatureInput, sFeatureOutput, ParserState::TRAIN));
-		std::ifstream input(sInputFile);
-		if (input) {
-			while (input >> ref_sent) {
-				++nRound;
-				parser->train(ref_sent, nRound);
-				if (nRound % 1000 == 0) {
-					parser->finishtraining();
-					parser.reset(new DepParser(sFeatureOutput, sFeatureOutput, ParserState::TRAIN));
-				}
-			}
-			parser->finishtraining();
-		}
-		input.close();
+        std::unique_ptr<DepParser> parser(new DepParser(sFeatureInput, sFeatureOutput, ParserState::TRAIN));
+        std::ifstream input(sInputFile);
+        if (input) {
+            while (input >> ref_sent) {
+                ++nRound;
+                parser->train(ref_sent, nRound);
+                if (nRound % 1000 == 0) {
+                    parser->finishtraining();
+                    parser.reset(new DepParser(sFeatureOutput, sFeatureOutput, ParserState::TRAIN));
+                }
+            }
+            parser->finishtraining();
+        }
+        input.close();
 
-		auto time_end = time(NULL);
+        auto time_end = time(NULL);
 
-		std::cout << "Done." << std::endl;
+        std::cout << "Done." << std::endl;
 
-		std::cout << "Training has finished successfully. Total time taken is: " << difftime(time_end, time_begin) << "s" << std::endl;
-	}
+        std::cout << "Training has finished successfully. Total time taken is: " << difftime(time_end, time_begin) <<
+        "s" << std::endl;
+    }
 
-	void Run::parse(const std::string & sInputFile, const std::string & sOutputFile, const std::string & sFeatureFile) const {
+    void Run::parse(const std::string &sInputFile, const std::string &sOutputFile,
+                    const std::string &sFeatureFile) const {
 
-		Sentence sentence;
-		DependencyTree tree;
+        Sentence sentence;
+        DependencyTree tree;
 
-		std::cout << "Parsing started" << std::endl;
+        std::cout << "Parsing started" << std::endl;
 
-		auto time_begin = time(NULL);
+        auto time_begin = time(NULL);
 
-		std::unique_ptr<DepParser> parser(new DepParser(sFeatureFile, sFeatureFile, ParserState::PARSE));
-		std::ifstream input(sInputFile);
-		std::ofstream output(sOutputFile);
-		if (input) {
-			while (input >> sentence) {
-				if (sentence.size() < MAX_SENTENCE_SIZE) {
-					parser->parse(sentence, &tree);
-					output << tree;
-					tree.clear();
-				}
-			}
-		}
-		input.close();
-		output.close();
+        std::unique_ptr<DepParser> parser(new DepParser(sFeatureFile, sFeatureFile, ParserState::PARSE));
+        std::ifstream input(sInputFile);
+        std::ofstream output(sOutputFile);
+        if (input) {
+            while (input >> sentence) {
+                if (sentence.size() < MAX_SENTENCE_SIZE) {
+                    parser->parse(sentence, &tree);
+                    output << tree;
+                    tree.clear();
+                }
+            }
+        }
+        input.close();
+        output.close();
 
-		auto time_end = time(NULL);
+        auto time_end = time(NULL);
 
-		auto seconds = difftime(time_end, time_begin);
+        auto seconds = difftime(time_end, time_begin);
 
-		std::cout << "Parsing has finished successfully. Total time taken is: " << difftime(time_end, time_begin) << "s" << std::endl;
-	}
+        std::cout << "Parsing has finished successfully. Total time taken is: " << difftime(time_end, time_begin) <<
+        "s" << std::endl;
+    }
 
-	void Run::goldtest(const std::string & sInputFile, const std::string & sFeatureInput) const {
-		int nRound = 0;
-		DependencyTree ref_sent;
+    void Run::goldtest(const std::string &sInputFile, const std::string &sFeatureInput) const {
+        int nRound = 0;
+        DependencyTree ref_sent;
 
-		std::cout << "GoldTest iteration is started..." << std::endl;
+        std::cout << "GoldTest iteration is started..." << std::endl;
 
-		auto time_begin = time(NULL);
+        auto time_begin = time(NULL);
 
-		std::unique_ptr<DepParser> parser(new DepParser(sFeatureInput, "", ParserState::GOLDTEST));
-		std::ifstream input(sInputFile);
-		if (input) {
-			while (input >> ref_sent) {
-				++nRound;
-				parser->train(ref_sent, nRound);
-			}
-		}
-		input.close();
+        std::unique_ptr<DepParser> parser(new DepParser(sFeatureInput, "", ParserState::GOLDTEST));
+        std::ifstream input(sInputFile);
+        if (input) {
+            while (input >> ref_sent) {
+                ++nRound;
+                parser->train(ref_sent, nRound);
+            }
+        }
+        input.close();
 
-		std::cout << "total " << nRound << " round" << std::endl;
+        std::cout << "total " << nRound << " round" << std::endl;
 
-		auto time_end = time(NULL);
+        auto time_end = time(NULL);
 
-		std::cout << "Done." << std::endl;
+        std::cout << "Done." << std::endl;
 
-		std::cout << "Training has finished successfully. Total time taken is: " << difftime(time_end, time_begin) << "s" << std::endl;
-	}
+        std::cout << "Training has finished successfully. Total time taken is: " << difftime(time_end, time_begin) <<
+        "s" << std::endl;
+    }
 }

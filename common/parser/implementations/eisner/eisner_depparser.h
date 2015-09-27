@@ -9,64 +9,71 @@
 #include "common/parser/depparser_base.h"
 
 namespace eisner {
-	class DepParser : public DepParserBase {
-	private:
-		static WordPOSTag empty_taggedword;
-		static WordPOSTag start_taggedword;
-		static WordPOSTag end_taggedword;
+    class DepParser : public DepParserBase {
+    private:
+        static WordPOSTag empty_taggedword;
+        static WordPOSTag start_taggedword;
+        static WordPOSTag end_taggedword;
 
-		StateItem m_lItems[MAX_SENTENCE_SIZE][MAX_SENTENCE_SIZE];
-		WordPOSTag m_lSentence[MAX_SENTENCE_SIZE];
-		std::vector<Arc> m_vecCorrectArcs;
-		std::vector<Arc> m_vecTrainArcs;
-		int m_nSentenceLength;
+        StateItem m_lItems[MAX_SENTENCE_SIZE][MAX_SENTENCE_SIZE];
+        WordPOSTag m_lSentence[MAX_SENTENCE_SIZE];
+        std::vector<Arc> m_vecCorrectArcs;
+        std::vector<Arc> m_vecTrainArcs;
+        int m_nSentenceLength;
 
-		tscore m_nRetval;
-		tscore m_lFirstOrderScore[MAX_SENTENCE_SIZE << 1];
+        tscore m_nRetval;
+        tscore m_lFirstOrderScore[MAX_SENTENCE_SIZE << 1];
 
-		int m_nDis, m_nDir;
+        int m_nDis, m_nDir;
 
-		Word p_word, c_word;
-		POSTag p_tag, c_tag;
+        Word p_word, c_word;
+        POSTag p_tag, c_tag;
 
-		WordInt word_int;
-		POSTagInt tag_int;
+        WordInt word_int;
+        POSTagInt tag_int;
 
-		POSTag p_1_tag, p1_tag, c_1_tag, c1_tag, b_tag;
+        POSTag p_1_tag, p1_tag, c_1_tag, c1_tag, b_tag;
 
-		TwoWordsInt word_word_int;
-		POSTagSet2Int tag_tag_int;
-		WordPOSTagInt word_tag_int;
+        TwoWordsInt word_word_int;
+        POSTagSet2Int tag_tag_int;
+        WordPOSTagInt word_tag_int;
 
-		POSTagSet3Int tag_tag_tag_int;
-		WordPOSTagPOSTagInt word_tag_tag_int;
-		WordWordPOSTagInt word_word_tag_int;
+        POSTagSet3Int tag_tag_tag_int;
+        WordPOSTagPOSTagInt word_tag_tag_int;
+        WordWordPOSTagInt word_word_tag_int;
 
-		POSTagSet4Int tag_tag_tag_tag_int;
-		WordWordPOSTagPOSTagInt word_word_tag_tag_int;
+        POSTagSet4Int tag_tag_tag_tag_int;
+        WordWordPOSTagPOSTagInt word_word_tag_tag_int;
 
-		std::unordered_set<BiGram<int>> m_setFirstGoldScore;
+        std::unordered_set<BiGram<int>> m_setFirstGoldScore;
 
-		void update();
-		void generate(DependencyTree * retval, const DependencyTree & correct);
-		void goldCheck();
+        void update();
 
-		tscore arcScore(const int & p, const int & c);
-		void initFirstOrderScore(const int & d);
+        void generate(DependencyTree *retval, const DependencyTree &correct);
 
-		void getOrUpdateStackScore(const int & p, const int & c, const int & amount = 0);
+        void goldCheck();
 
-	public:
-		DepParser(const std::string & sFeatureInput, const std::string & sFeatureOut, int nState);
-		~DepParser();
+        tscore arcScore(const int &p, const int &c);
 
-		void decode() override;
-		void decodeArcs() override;
+        void initFirstOrderScore(const int &d);
 
-		void train(const DependencyTree & correct, const int & round);
-		void parse(const Sentence & sentence, DependencyTree * retval);
-		void work(DependencyTree * retval, const DependencyTree & correct);
-	};
+        void getOrUpdateStackScore(const int &p, const int &c, const int &amount = 0);
+
+    public:
+        DepParser(const std::string &sFeatureInput, const std::string &sFeatureOut, int nState);
+
+        ~DepParser();
+
+        void decode() override;
+
+        void decodeArcs() override;
+
+        void train(const DependencyTree &correct, const int &round);
+
+        void parse(const Sentence &sentence, DependencyTree *retval);
+
+        void work(DependencyTree *retval, const DependencyTree &correct);
+    };
 }
 
 #endif

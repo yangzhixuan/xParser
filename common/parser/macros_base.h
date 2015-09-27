@@ -10,26 +10,26 @@
 #define MAX_SENTENCE_SIZE 256
 #define MAX_SENTENCE_BITS 8
 
-#define ROOT_WORD		"-ROOT-"
-#define ROOT_POSTAG		"-ROOT-"
-#define EMPTY_WORD		"-EMPTY-"
-#define EMPTY_POSTAG	"-EMPTY-"
-#define START_WORD		"-START-"
-#define START_POSTAG	"-START-"
-#define END_WORD		"-END-"
-#define END_POSTAG		"-END-"
+#define ROOT_WORD        "-ROOT-"
+#define ROOT_POSTAG        "-ROOT-"
+#define EMPTY_WORD        "-EMPTY-"
+#define EMPTY_POSTAG    "-EMPTY-"
+#define START_WORD        "-START-"
+#define START_POSTAG    "-START-"
+#define END_WORD        "-END-"
+#define END_POSTAG        "-END-"
 
-#define SENT_SPTOKEN	"/"
-#define SENT_WORD(X)	std::get<0>(X)
-#define SENT_POSTAG(X)	std::get<1>(X)
+#define SENT_SPTOKEN    "/"
+#define SENT_WORD(X)    std::get<0>(X)
+#define SENT_POSTAG(X)    std::get<1>(X)
 
-#define TREENODE_WORD(X)			std::get<0>(std::get<0>(X))
-#define TREENODE_POSTAG(X)			std::get<1>(std::get<0>(X))
-#define TREENODE_POSTAGGEDWORD(X)	std::get<0>(X)
-#define TREENODE_HEAD(X)			std::get<1>(X)
-#define TREENODE_LABEL(X)			std::get<2>(X)
+#define TREENODE_WORD(X)            std::get<0>(std::get<0>(X))
+#define TREENODE_POSTAG(X)            std::get<1>(std::get<0>(X))
+#define TREENODE_POSTAGGEDWORD(X)    std::get<0>(X)
+#define TREENODE_HEAD(X)            std::get<1>(X)
+#define TREENODE_LABEL(X)            std::get<2>(X)
 
-#define IS_EMPTY(X)				((X) >= MAX_SENTENCE_SIZE)
+#define IS_EMPTY(X)                ((X) >= MAX_SENTENCE_SIZE)
 
 typedef int gtype;
 
@@ -76,7 +76,7 @@ typedef std::tuple<POSTaggedWord, int, ttoken> DependencyTreeNode;
 typedef std::vector<POSTaggedWord> Sentence;
 typedef std::vector<DependencyTreeNode> DependencyTree;
 
-class DependencyGraph{
+class DependencyGraph {
 public:
     int num_words;
     int num_arcs;
@@ -84,16 +84,20 @@ public:
     std::vector<POSTaggedWord> pos_words;
     std::vector<int> predicates_index;
     int graph[MAX_SENTENCE_SIZE][MAX_SENTENCE_SIZE];
+
     void clear();
 };
 
-int encodeLinkDistanceOrDirection(const int & hi, const int & di, bool dir);
+int encodeLinkDistanceOrDirection(const int &hi, const int &di, bool dir);
 
-std::istream & operator>>(std::istream& input, DependencyGraph & graph);
-std::istream & operator>>(std::istream & input, Sentence & sentence);
-std::istream & operator>>(std::istream & input, DependencyTree & tree);
+std::istream &operator>>(std::istream &input, DependencyGraph &graph);
 
-std::ostream & operator<<(std::ostream & output, const Sentence & sentence);
-std::ostream & operator<<(std::ostream & output, const DependencyTree & tree);
+std::istream &operator>>(std::istream &input, Sentence &sentence);
+
+std::istream &operator>>(std::istream &input, DependencyTree &tree);
+
+std::ostream &operator<<(std::ostream &output, const Sentence &sentence);
+
+std::ostream &operator<<(std::ostream &output, const DependencyTree &tree);
 
 #endif

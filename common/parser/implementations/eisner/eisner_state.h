@@ -5,32 +5,36 @@
 #include "include/learning/perceptron/score.h"
 
 namespace eisner {
-	class StateItem {
-	public:
-		int type;
-		int left, right;
-		ScoreWithSplit l2r, r2l, l2r_im, r2l_im;
+    class StateItem {
+    public:
+        int type;
+        int left, right;
+        ScoreWithSplit l2r, r2l, l2r_im, r2l_im;
 
-	public:
-		static enum STATE{
-			L2R_COMP = 1,
-			R2L_COMP,
-			L2R_IM_COMP,
-			R2L_IM_COMP,
-		};
+    public:
+        static enum STATE {
+            L2R_COMP = 1,
+            R2L_COMP,
+            L2R_IM_COMP,
+            R2L_IM_COMP,
+        };
 
-		StateItem();
-		~StateItem();
+        StateItem();
 
-		void init(const int & l, const int & r);
+        ~StateItem();
 
-		void updateL2R(const int & split, const tscore & score);
-		void updateR2L(const int & split, const tscore & score);
-		void updateL2RIm(const int & split, const tscore & score);
-		void updateR2LIm(const int & split, const tscore & score);
+        void init(const int &l, const int &r);
 
-		void print();
-	};
+        void updateL2R(const int &split, const tscore &score);
+
+        void updateR2L(const int &split, const tscore &score);
+
+        void updateL2RIm(const int &split, const tscore &score);
+
+        void updateR2LIm(const int &split, const tscore &score);
+
+        void print();
+    };
 }
 
 #endif

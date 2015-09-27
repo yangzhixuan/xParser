@@ -21,7 +21,7 @@ namespace titovdp {
     }
 
     static PushComputation traverse(DeductionSet &retval, const std::vector<Transition> &seq,
-                                        const std::vector<int> &depth, int start, int end, int x, int i) {
+                                    const std::vector<int> &depth, int start, int end, int x, int i) {
         if (start == end) {
             Deduction d;
             d.pc1 = shift_pc(x, i);
@@ -103,7 +103,7 @@ namespace titovdp {
                     depth.push_back(stack.size() + 1);
                     // std::cerr<<"want: "<<z<<" "<<ptr<<", got: "<<arcs[z].front()<<"\n";
                     // assert(arcs[z].front() == ptr);
-                    if(arcs[z].front() != ptr) {
+                    if (arcs[z].front() != ptr) {
                         success = 0;
                         break;
                     }
@@ -115,7 +115,7 @@ namespace titovdp {
                     depth.push_back(stack.size() + 1);
                     // std::cerr<<"want: "<<z<<" "<<ptr<<", got: "<<arcs[z].front()<<"\n";
                     // assert(arcs[z].front() == ptr);
-                    if(arcs[z].front() != ptr) {
+                    if (arcs[z].front() != ptr) {
                         success = 0;
                         break;
                     }

@@ -10,7 +10,7 @@
 #include "titovdp_run.h"
 #include "titovdp_depparser.h"
 
-namespace titovdp{
+namespace titovdp {
 
     Run::Run() = default;
 
@@ -30,9 +30,9 @@ namespace titovdp{
             while (input >> ref_sent) {
                 ++nRound;
                 parser->train(ref_sent);
-                if(nRound % OUTPUT_STEP == 0) {
+                if (nRound % OUTPUT_STEP == 0) {
                     toc = clock();
-                    double speed = (double)nRound / ((double)(toc - tic) / CLOCKS_PER_SEC);
+                    double speed = (double) nRound / ((double) (toc - tic) / CLOCKS_PER_SEC);
                     std::cout << "Speed: " << speed << " sentences / second" << std::endl;
                     std::cout << std::endl;
                 }
@@ -41,7 +41,7 @@ namespace titovdp{
         }
         input.close();
 
-        std::cout << "Done. " << nRound<< " sentences were processed"<<std::endl;
+        std::cout << "Done. " << nRound << " sentences were processed" << std::endl;
     }
 
     void Run::parse(const std::string &sInputFile, const std::string &sOutputFile,

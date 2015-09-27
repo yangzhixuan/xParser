@@ -13,41 +13,43 @@ namespace eisnergc3rd {
 #define GOLD_POS_SCORE 10
 #define GOLD_NEG_SCORE -50
 
-#define ENCODE_L2R(X)			((X) << 1)
-#define ENCODE_R2L(X)			(((X) << 1) + 1)
-#define ENCODE_2ND_L2R(X,Y)		ENCODE_L2R(((X) << MAX_SENTENCE_BITS) | (Y))
-#define ENCODE_2ND_R2L(X,Y)		ENCODE_R2L(((X) << MAX_SENTENCE_BITS) | (Y))
+#define ENCODE_L2R(X)            ((X) << 1)
+#define ENCODE_R2L(X)            (((X) << 1) + 1)
+#define ENCODE_2ND_L2R(X, Y)        ENCODE_L2R(((X) << MAX_SENTENCE_BITS) | (Y))
+#define ENCODE_2ND_R2L(X, Y)        ENCODE_R2L(((X) << MAX_SENTENCE_BITS) | (Y))
 
-#define IS_NULL(X)				((X) == -1)
+#define IS_NULL(X)                ((X) == -1)
 
-#define GRAND_INDEX(G,I,D)		((G) < (I) ? (G) : ((G) - (D)))
+#define GRAND_INDEX(G, I, D)        ((G) < (I) ? (G) : ((G) - (D)))
 
-	typedef PackedScoreMap<WordInt> WordIntMap;
-	typedef PackedScoreMap<POSTagInt> POSTagIntMap;
+    typedef PackedScoreMap<WordInt> WordIntMap;
+    typedef PackedScoreMap<POSTagInt> POSTagIntMap;
 
-	typedef PackedScoreMap<TwoWordsInt> TwoWordsIntMap;
-	typedef PackedScoreMap<POSTagSet2Int> POSTagSet2IntMap;
-	typedef PackedScoreMap<WordPOSTagInt> WordPOSTagIntMap;
+    typedef PackedScoreMap<TwoWordsInt> TwoWordsIntMap;
+    typedef PackedScoreMap<POSTagSet2Int> POSTagSet2IntMap;
+    typedef PackedScoreMap<WordPOSTagInt> WordPOSTagIntMap;
 
-	typedef PackedScoreMap<POSTagSet3Int> POSTagSet3IntMap;
-	typedef PackedScoreMap<WordWordPOSTagInt> WordWordPOSTagIntMap;
-	typedef PackedScoreMap<WordPOSTagPOSTagInt> WordPOSTagPOSTagIntMap;
+    typedef PackedScoreMap<POSTagSet3Int> POSTagSet3IntMap;
+    typedef PackedScoreMap<WordWordPOSTagInt> WordWordPOSTagIntMap;
+    typedef PackedScoreMap<WordPOSTagPOSTagInt> WordPOSTagPOSTagIntMap;
 
-	typedef PackedScoreMap<POSTagSet4Int> POSTagSet4IntMap;
-	typedef PackedScoreMap<WordWordPOSTagPOSTagInt> WordWordPOSTagPOSTagIntMap;
-	typedef PackedScoreMap<WordPOSTagPOSTagPOSTagInt> WordPOSTagPOSTagPOSTagIntMap;
+    typedef PackedScoreMap<POSTagSet4Int> POSTagSet4IntMap;
+    typedef PackedScoreMap<WordWordPOSTagPOSTagInt> WordWordPOSTagPOSTagIntMap;
+    typedef PackedScoreMap<WordPOSTagPOSTagPOSTagInt> WordPOSTagPOSTagPOSTagIntMap;
 
-	typedef PackedScoreMap<POSTagSet5Int> POSTagSet5IntMap;
-	typedef PackedScoreMap<WordPOSTagPOSTagPOSTagPOSTagInt> WordPOSTagPOSTagPOSTagPOSTagIntMap;
+    typedef PackedScoreMap<POSTagSet5Int> POSTagSet5IntMap;
+    typedef PackedScoreMap<WordPOSTagPOSTagPOSTagPOSTagInt> WordPOSTagPOSTagPOSTagPOSTagIntMap;
 
-	typedef AgendaBeam<ScoreWithBiSplit, AGENDA_SIZE> ScoreAgenda;
+    typedef AgendaBeam<ScoreWithBiSplit, AGENDA_SIZE> ScoreAgenda;
 
-	typedef BiGram<int> Arc;
-	typedef QuinGram<int> QuarArc;
+    typedef BiGram<int> Arc;
+    typedef QuinGram<int> QuarArc;
 
-	bool operator<(const Arc & arc1, const Arc & arc2);
-	int findInnerSplit(const ScoreAgenda & agendaBeam, const int & split);
-	void Arcs2QuarArcs(std::vector<Arc> & arcs, std::vector<QuarArc> & triarcs);
+    bool operator<(const Arc &arc1, const Arc &arc2);
+
+    int findInnerSplit(const ScoreAgenda &agendaBeam, const int &split);
+
+    void Arcs2QuarArcs(std::vector<Arc> &arcs, std::vector<QuarArc> &triarcs);
 }
 
 #endif

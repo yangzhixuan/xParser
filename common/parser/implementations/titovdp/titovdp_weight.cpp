@@ -7,10 +7,10 @@
 #include <common/token/pos.h>
 #include "titovdp_weight.h"
 
-namespace titovdp{
-    Weight::Weight(const std::string &sInput, const std::string &sRecord) : WeightBase(sInput, sRecord){
+namespace titovdp {
+    Weight::Weight(const std::string &sInput, const std::string &sRecord) : WeightBase(sInput, sRecord) {
         loadScores();
-        std::cout<<"load finished"<<std::endl;
+        std::cout << "load finished" << std::endl;
     }
 
     Weight::~Weight() = default;
@@ -24,7 +24,7 @@ namespace titovdp{
             return;
         }
 
-        std::cout<<"reading from: "<<m_sReadPath<<std::endl;
+        std::cout << "reading from: " << m_sReadPath << std::endl;
         input >> TWord::getTokenizer();
         input >> TPOSTag::getTokenizer();
 
