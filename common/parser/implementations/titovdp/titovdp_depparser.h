@@ -35,8 +35,8 @@ namespace titovdp{
         ArcSet decodedArcs;
         int numDecodedArcs, numGoldArcs, numCorrectArcs;
 
-        AgendaBeam<SPCPtr, BEAM_SIZE> chart_mem[MAX_SENTENCE_SIZE + 5][MAX_SENTENCE_SIZE + 5];
-        AgendaBeam<SPCPtr, BEAM_SIZE> (*chart)[MAX_SENTENCE_SIZE];
+        AgendaBeam<SPCPtr, BEAM_SIZE, PtrSPCCompare> chart_mem[MAX_SENTENCE_SIZE + 5][MAX_SENTENCE_SIZE + 5];
+        AgendaBeam<SPCPtr, BEAM_SIZE, PtrSPCCompare> (*chart)[MAX_SENTENCE_SIZE];
 
         int chart_sortbyx_mem[MAX_SENTENCE_SIZE+5][MAX_SENTENCE_SIZE+5][BEAM_SIZE];
         int (*chart_sortbyx)[MAX_SENTENCE_SIZE][BEAM_SIZE];

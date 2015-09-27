@@ -1,5 +1,6 @@
 #include <utility>
 #include <iterator>
+#include <functional>
 
 #ifndef _AGENDA_H
 #define _AGENDA_H
@@ -50,7 +51,7 @@ public:
 	}
 };
 
-template<typename KEY_TYPE, int SIZE>
+template<typename KEY_TYPE, int SIZE, typename COMPARE = std::greater<KEY_TYPE> >
 class AgendaBeam {
 public:
 	typedef BeamIterator<KEY_TYPE>				iterator;
@@ -60,6 +61,7 @@ private:
 	int m_nBeamSize;
 	bool m_bItemSorted;
 	KEY_TYPE m_lBeam[SIZE];
+    COMPARE comparer;
 
 	void pop_heap();
 	void push_heap(int base);
@@ -84,8 +86,8 @@ public:
     const KEY_TYPE& operator[](int index) { return m_lBeam[index]; }
 };
 
-template<typename KEY_TYPE, int SIZE>
-void AgendaBeam<KEY_TYPE, SIZE>::push_heap(int base) {
+template<typename KEY_TYPE, int SIZE, typename COMPARE>
+void AgendaBeam<KEY_TYPE, SIZE, COMPARE>::push_heap(int base) {
 	while (base > 0) {
 		int next_base = (base - 1) >> 1;
 		if (m_lBeam[next_base] > m_lBeam[base]) {
@@ -98,8 +100,8 @@ void AgendaBeam<KEY_TYPE, SIZE>::push_heap(int base) {
 	}
 }
 
-template<typename KEY_TYPE, int SIZE>
-void AgendaBeam<KEY_TYPE, SIZE>::pop_heap() {
+template<typename KEY_TYPE, int SIZE, typename COMPARE>
+void AgendaBeam<KEY_TYPE, SIZE, COMPARE>::pop_heap() {
 	if (m_nBeamSize <= 0) {
 		return;
 	}
@@ -118,21 +120,21 @@ void AgendaBeam<KEY_TYPE, SIZE>::pop_heap() {
 	push_heap(index);
 }
 
-template<typename KEY_TYPE, int SIZE>
-void AgendaBeam<KEY_TYPE, SIZE>::clear() {
+template<typename KEY_TYPE, int SIZE, typename COMPARE>
+void AgendaBeam<KEY_TYPE, SIZE, COMPARE>::clear() {
 	m_nBeamSize = 0;
 	m_bItemSorted = false;
 }
 
-template<typename KEY_TYPE, int SIZE>
-int AgendaBeam<KEY_TYPE, SIZE>::size() {
+template<typename KEY_TYPE, int SIZE, typename COMPARE>
+int AgendaBeam<KEY_TYPE, SIZE, COMPARE>::size() {
 	 return m_nBeamSize;
 }
 
-template<typename KEY_TYPE, int SIZE>
-void AgendaBeam<KEY_TYPE, SIZE>::insertItem(const KEY_TYPE & item) {
+template<typename KEY_TYPE, int SIZE, typename COMPARE>
+void AgendaBeam<KEY_TYPE, SIZE, COMPARE>::insertItem(const KEY_TYPE &item) {
 	if (m_nBeamSize == SIZE) {
-		if (item > m_lBeam[0]) {
+        if (comparer(item, m_lBeam[0])) {
 			pop_heap();
 		}
 		else {
@@ -143,8 +145,8 @@ void AgendaBeam<KEY_TYPE, SIZE>::insertItem(const KEY_TYPE & item) {
 	push_heap(m_nBeamSize++);
 }
 
-template<typename KEY_TYPE, int SIZE>
-void AgendaBeam<KEY_TYPE, SIZE>::sortItems() {
+template<typename KEY_TYPE, int SIZE, typename COMPARE>
+void AgendaBeam<KEY_TYPE, SIZE, COMPARE>::sortItems() {
 	if (m_bItemSorted) {
 		return;
 	}
@@ -156,8 +158,8 @@ void AgendaBeam<KEY_TYPE, SIZE>::sortItems() {
 	m_bItemSorted = true;
 }
 
-template<typename KEY_TYPE, int SIZE>
-const KEY_TYPE & AgendaBeam<KEY_TYPE, SIZE>::bestItem(const int & index) {
+template<typename KEY_TYPE, int SIZE, typename COMPARE>
+const KEY_TYPE &AgendaBeam<KEY_TYPE, SIZE, COMPARE>::bestItem(const int &index) {
 	if (!m_bItemSorted) {
 		sortItems();
 	}

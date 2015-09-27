@@ -21,6 +21,11 @@ namespace titovdp{
         return pc1.attr.score > pc2.attr.score;
     }
 
+    bool PtrSPCCompare::operator()(const shared_ptr<const ScoredPushComputation> &p1,
+                                   const shared_ptr<const ScoredPushComputation> &p2) {
+        return p1->attr.score > p2->attr.score;
+    }
+
     bool operator==(const PushComputation & pc1, const PushComputation & pc2) {
         if(pc1.i == pc2.i
            && pc1.j == pc2.j
@@ -62,18 +67,17 @@ namespace titovdp{
         return pc;
     }
 
-    PushComputation singleton_pc(const PushComputation & pc, Transition action, bool inverse) {
+    PushComputation singleton_pc(const PushComputation &pc, Transition action) {
         PushComputation newpc(pc);
-        int v = (int)!inverse;
         switch(action) {
             case SWAP:
-                newpc.yz_swapped = v;
+                newpc.yz_swapped = 1;
                 std::swap(newpc.y, newpc.z);
                 std::swap(newpc.zj_connected, newpc.yj_connected);
                 std::swap(newpc.jz_connected, newpc.jy_connected);
                 break;
             case LEFT_ARC:
-                newpc.jz_connected = v;
+                newpc.jz_connected = 1;
                 if(newpc.jls == -1) {
                     newpc.jls = newpc.jrs = newpc.z;
                 } else {
@@ -82,7 +86,7 @@ namespace titovdp{
                 }
                 break;
             case RIGHT_ARC:
-                newpc.zj_connected = v;
+                newpc.zj_connected = 1;
                 break;
             default:
                 break;

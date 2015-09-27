@@ -71,6 +71,11 @@ namespace titovdp{
         ScoredPushComputation(const PushComputation & pc, const ScoreInformation & info);
     };
 
+    struct PtrSPCCompare {
+        bool operator()(const shared_ptr<const ScoredPushComputation> &p1,
+                        const shared_ptr<const ScoredPushComputation> &p2);
+    };
+
     std::ostream& operator<<(std::ostream& out, const PushComputation & pc);
     std::ostream& operator<<(std::ostream& out, const Deduction& pc);
     bool operator==(const PushComputation & pc1, const PushComputation & pc2);
@@ -87,7 +92,8 @@ namespace titovdp{
     typedef std::unordered_set<Deduction> DeductionSet;
 
     PushComputation reduce_pc(const PushComputation & pc1, const PushComputation & pc2);
-    PushComputation singleton_pc(const PushComputation & pc, Transition action, bool inverse = false);
+
+    PushComputation singleton_pc(const PushComputation &pc, Transition action);
     PushComputation shift_pc(int x, int i);
 }
 

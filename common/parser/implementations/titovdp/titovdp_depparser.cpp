@@ -58,7 +58,7 @@ namespace titovdp{
             return;
         }
 
-        if(0 && nRound > 2000) {
+        if (nRound > 2000) {
             std::cout<<"round "<<nRound<<" gold start:\n";
             std::cout<<YELLOW;
             for(auto d : goldDeductions) {
@@ -230,7 +230,7 @@ namespace titovdp{
             decodedDeductions.insert(d);
             return;
         }
-        if(pprev1->pc.j != ppc->pc.j) {
+        if (pprev1 != nullptr && pprev2 != nullptr) {
             d.pc1 = pprev1->pc;
             d.pc2 = pprev2->pc;
             d.type = REDUCE;
@@ -253,8 +253,8 @@ namespace titovdp{
 
     void DepParser::decodeTransitions() {
         // Goal: [-1 -1 -1 -1 n+1] with highest score
-        decodedDeductions.clear();
         SPCPtr pc = nullptr;
+        decodedDeductions.clear();
         for(int i = 0; i < chart[-1][sentenceLength+1].size(); i++) {
             if(chart[-1][sentenceLength+1][i]->pc.z == -1
                     && chart[-1][sentenceLength+1][i]->pc.y == -1) {
