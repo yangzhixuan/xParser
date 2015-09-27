@@ -6,6 +6,11 @@
 #include "titovdp_state.h"
 
 namespace titovdp{
+    ScoredPushComputation::ScoredPushComputation(const PushComputation &pc, const ScoreInformation &info)
+            : pc(pc), attr(info) {
+
+    }
+
     bool operator<(const ScoreInformation & a1, const ScoreInformation & a2) {
         return a1.score < a2.score;
     }
@@ -22,8 +27,8 @@ namespace titovdp{
            && pc1.x == pc2.x
            && pc1.y == pc2.y
            && pc1.z == pc2.z
-           && pc1.jls == pc2.jls
-           && pc1.jrs == pc2.jrs
+     //      && pc1.jls == pc2.jls
+     //      && pc1.jrs == pc2.jrs
            && pc1.yj_connected == pc2.yj_connected
            && pc1.jy_connected == pc2.jy_connected
            && pc1.zj_connected == pc2.zj_connected

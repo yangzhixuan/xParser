@@ -75,7 +75,7 @@ namespace titovdp{
                     }
                     int found = 0;
                     for(int k = 0; k < chart[p.i][p.j].size(); k++) {
-                        if(chart[p.i][p.j][k].pc == p) {
+                        if(chart[p.i][p.j][k]->pc == p) {
                             found = 1;
                             break;
                         }
@@ -164,7 +164,7 @@ namespace titovdp{
         int i, j, k, x, len;
         PushComputation pc;
         ScoreInformation score;
-        PCHashTable candidates;
+        PCHashT candidates;
 
         // Axioms: SHIFT computations
         for(i = -1; i <= sentenceLength; i++) {
@@ -192,21 +192,21 @@ namespace titovdp{
                     p2 = &chart_sortbyx[k][j][0];
                     p2_end = p2 + chart[k][j].size();
                     while(p1 != p1_end) {
-                        while(p2 != p2_end && chart[k][j][*p2].pc.x < chart[i][k][*p1].pc.z) {
+                        while(p2 != p2_end && chart[k][j][*p2]->pc.x < chart[i][k][*p1]->pc.z) {
                             p2++;
                         }
                         if(p2 == p2_end){
                             break;
                         }
-                        if(chart[k][j][*p2].pc.x == chart[i][k][*p1].pc.z) {
+                        if(chart[k][j][*p2]->pc.x == chart[i][k][*p1]->pc.z) {
                             int *p3 = p2;
-                            while(p3 != p2_end && chart[k][j][*p3].pc.x == chart[i][k][*p1].pc.z) {
-                                pc = reduce_pc(chart[i][k][*p1].pc, chart[k][j][*p3].pc);
+                            while(p3 != p2_end && chart[k][j][*p3]->pc.x == chart[i][k][*p1]->pc.z) {
+                                pc = reduce_pc(chart[i][k][*p1]->pc, chart[k][j][*p3]->pc);
 
-                                score.score = chart[i][k][*p1].attr.score + chart[k][j][*p3].attr.score +
-                                        getOrUpdateScore(chart[i][k][*p1].pc, chart[k][j][*p3].pc, 0);
-                                score.prev1 = &chart[i][k][*p1];
-                                score.prev2 = &chart[k][j][*p3];
+                                score.score = chart[i][k][*p1]->attr.score + chart[k][j][*p3]->attr.score +
+                                        getOrUpdateScore(chart[i][k][*p1]->pc, chart[k][j][*p3]->pc, 0);
+                                score.prev1 = chart[i][k][*p1];
+                                score.prev2 = chart[k][j][*p3];
 
                                 addItem(candidates, pc, score);
                                 p3++;
@@ -220,61 +220,45 @@ namespace titovdp{
         }
     }
 
-    static void traverse(DeductionSet & retval, const ScoredPushComputation *ppc) {
+    void DepParser::traversePC(cSPCPtr ppc) {
         Deduction d;
-        PushComputation pc = ppc->pc;
-        if(pc.zj_connected) {
-            pc = singleton_pc(pc, RIGHT_ARC, true);
-            d.pc1 = pc;
-            d.type = RIGHT_ARC;
-            retval.insert(d);
-        }
-        if(pc.jz_connected) {
-            pc = singleton_pc(pc, LEFT_ARC, true);
-            d.pc1 = pc;
-            d.type = LEFT_ARC;
-            retval.insert(d);
-        }
-        if(pc.yz_swapped) {
-            pc = singleton_pc(pc, SWAP, true);
-            d.pc1 = pc;
-            d.type = SWAP;
-            retval.insert(d);
-
-            if(d.pc1.zj_connected){
-                d.type = RIGHT_ARC;
-                d.pc1.zj_connected = 0;
-                retval.insert(d);
-            }
-            if(d.pc1.jz_connected){
-                d.type = LEFT_ARC;
-                d.pc1.jz_connected = 0;
-                retval.insert(d);
-            }
-        }
-
-        if(ppc->attr.prev1 != nullptr && ppc->attr.prev2 != nullptr) {
-            d.pc1 = ppc->attr.prev1->pc;
-            d.pc2 = ppc->attr.prev2->pc;
-            d.type = REDUCE;
-            retval.insert(d);
-            traverse(retval, ppc->attr.prev1);
-            traverse(retval, ppc->attr.prev2);
-        } else {
-            d.pc1 = pc;
+        cSPCPtr pprev1 = ppc->attr.prev1;
+        cSPCPtr pprev2 = ppc->attr.prev2;
+        if(pprev1 == nullptr) {
+            d.pc1 = ppc->pc;
             d.type = SHIFT;
-            retval.insert(d);
+            decodedDeductions.insert(d);
+            return;
         }
+        if(pprev1->pc.j != ppc->pc.j) {
+            d.pc1 = pprev1->pc;
+            d.pc2 = pprev2->pc;
+            d.type = REDUCE;
+            decodedDeductions.insert(d);
+            traversePC(pprev1);
+            traversePC(pprev2);
+            return;
+        }
+        if(pprev1->pc.yz_swapped != ppc->pc.yz_swapped) {
+            d.type = SWAP;
+        } else if(pprev1->pc.zj_connected != ppc->pc.zj_connected) {
+            d.type = RIGHT_ARC;
+        } else if(pprev1->pc.jz_connected != ppc->pc.jz_connected) {
+            d.type = LEFT_ARC;
+        }
+        d.pc1 = pprev1->pc;
+        decodedDeductions.insert(d);
+        traversePC(pprev1);
     }
 
     void DepParser::decodeTransitions() {
         // Goal: [-1 -1 -1 -1 n+1] with highest score
         decodedDeductions.clear();
-        const ScoredPushComputation* pc = nullptr;
+        SPCPtr pc = nullptr;
         for(int i = 0; i < chart[-1][sentenceLength+1].size(); i++) {
-            if(chart[-1][sentenceLength+1][i].pc.z == -1
-                    && chart[-1][sentenceLength+1][i].pc.y == -1) {
-                pc = &chart[-1][sentenceLength+1][i];
+            if(chart[-1][sentenceLength+1][i]->pc.z == -1
+                    && chart[-1][sentenceLength+1][i]->pc.y == -1) {
+                pc = chart[-1][sentenceLength+1][i];
             }
         }
         if(pc == nullptr) {
@@ -282,7 +266,7 @@ namespace titovdp{
             std::cerr<<"decode failed: goal not found"<<std::endl;
             return;
         }
-        traverse(decodedDeductions, pc);
+        traversePC(pc);
     }
 
     void DepParser::decodeArcs() {
@@ -297,56 +281,55 @@ namespace titovdp{
 
     }
 
-    void DepParser::addItem(PCHashTable & candidates, const PushComputation & pc, const ScoreInformation & score_info) {
+    void DepParser::addItem(PCHashT & candidates, const PushComputation & pc, const ScoreInformation & score_info) {
         if(candidates.find(pc) == candidates.end()) {
-            candidates[pc] = score_info;
+            std::shared_ptr<ScoredPushComputation> spc(new ScoredPushComputation(pc, score_info));
+            candidates[pc] = spc;
         } else {
-            if(score_info.score > candidates[pc].score) {
-                candidates[pc] = score_info;
+            if(score_info.score > candidates[pc]->attr.score) {
+                candidates[pc]->attr = score_info;
             } else {
                 return;
             }
         }
 
+        ScoreInformation newinfo;
+        newinfo.prev1 = candidates[pc];
+        newinfo.prev2 = nullptr;
         if(!pc.zj_connected && pc.z >= 0 && pc.j <= sentenceLength) {
-            ScoreInformation newinfo(score_info);
-            newinfo.score += getOrUpdateScore(pc, RIGHT_ARC, 0);
+            newinfo.score = score_info.score + getOrUpdateScore(pc, RIGHT_ARC, 0);
             PushComputation newpc = singleton_pc(pc, RIGHT_ARC);
             addItem(candidates, newpc, newinfo);
         }
-
-       if(!pc.jz_connected && pc.z >= 0 && pc.j <= sentenceLength) {
-           ScoreInformation newinfo(score_info);
-           newinfo.score += getOrUpdateScore(pc, LEFT_ARC, 0);
-           PushComputation newpc = singleton_pc(pc, LEFT_ARC);
-           addItem(candidates, newpc, newinfo);
-       }
-
-        if(!pc.yz_swapped && pc.z >= 0 && pc.y >= 0) {
-            ScoreInformation newinfo(score_info);
-            newinfo.score += getOrUpdateScore(pc, SWAP, 0);
+        if(!pc.jz_connected && pc.z >= 0 && pc.j <= sentenceLength) {
+            newinfo.score = score_info.score + getOrUpdateScore(pc, LEFT_ARC, 0);
+            PushComputation newpc = singleton_pc(pc, LEFT_ARC);
+            addItem(candidates, newpc, newinfo);
+        }
+        if(!pc.yz_swapped && pc.y >= 0 && pc.z >= 0) {
+            newinfo.score = score_info.score + getOrUpdateScore(pc, SWAP, 0);
             PushComputation newpc = singleton_pc(pc, SWAP);
             addItem(candidates, newpc, newinfo);
         }
     }
 
-    void DepParser::gatherBeam(const PCHashTable &candidates, int i, int j) {
+    void DepParser::gatherBeam(const PCHashT & candidates, int i, int j) {
         chart[i][j].clear();
         for(auto iter : candidates) {
-            chart[i][j].insertItem(ScoredPushComputation{iter.first, iter.second});
+            chart[i][j].insertItem(iter.second);
         }
+
         for(int k = 0; k < chart[i][j].size(); k++) {
             chart_sortbyx[i][j][k] = k;
             chart_sortbyz[i][j][k] = k;
         }
         std::sort(&chart_sortbyz[i][j][0], (&chart_sortbyz[i][j][0]) + chart[i][j].size(),
                   [&](const int& p1, const int& p2){
-                      return chart[i][j][p1].pc.z < chart[i][j][p2].pc.z;
+                      return chart[i][j][p1]->pc.z < chart[i][j][p2]->pc.z;
                   });
         std::sort(&chart_sortbyx[i][j][0], (&chart_sortbyx[i][j][0]) + chart[i][j].size(),
                   [&](const int& p1, const int& p2){
-                      return chart[i][j][p1].pc.x < chart[i][j][p2].pc.x;
+                      return chart[i][j][p1]->pc.x < chart[i][j][p2]->pc.x;
                   });
     }
-
 }

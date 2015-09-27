@@ -35,8 +35,8 @@ namespace titovdp{
         ArcSet decodedArcs;
         int numDecodedArcs, numGoldArcs, numCorrectArcs;
 
-        AgendaBeam<ScoredPushComputation, BEAM_SIZE> chart_mem[MAX_SENTENCE_SIZE + 5][MAX_SENTENCE_SIZE + 5];
-        AgendaBeam<ScoredPushComputation, BEAM_SIZE> (*chart)[MAX_SENTENCE_SIZE];
+        AgendaBeam<SPCPtr, BEAM_SIZE> chart_mem[MAX_SENTENCE_SIZE + 5][MAX_SENTENCE_SIZE + 5];
+        AgendaBeam<SPCPtr, BEAM_SIZE> (*chart)[MAX_SENTENCE_SIZE];
 
         int chart_sortbyx_mem[MAX_SENTENCE_SIZE+5][MAX_SENTENCE_SIZE+5][BEAM_SIZE];
         int (*chart_sortbyx)[MAX_SENTENCE_SIZE][BEAM_SIZE];
@@ -46,13 +46,14 @@ namespace titovdp{
 
         int nRound;
 
-        void addItem(PCHashTable & candidates, const PushComputation & pc, const ScoreInformation & score_info);
-        void gatherBeam(const PCHashTable& candidates, int i, int j);
+        void addItem(PCHashT & candidates, const PushComputation & pc, const ScoreInformation & score_info);
+        void gatherBeam(const PCHashT & candidates, int i, int j);
         tscore getOrUpdateScore(const PushComputation & pc, Transition t, tscore amount);
         tscore getOrUpdateScore(const PushComputation & pc1, const PushComputation & pc2, tscore amount);
         const WordPOSTag& getWordinStack(int index);
         const WordPOSTag& getWordinSentence(int index);
         bool getGoldTransitions(const DependencyGraph & gold);
+        void traversePC(cSPCPtr pc);
 
     };
 }

@@ -8,8 +8,11 @@
 #include <include/learning/perceptron/score.h>
 #include <unordered_set>
 #include <iostream>
+#include <memory>
 
 namespace titovdp{
+
+    using std::shared_ptr;
 
     #define RESET   "\033[0m"
     #define BLACK   "\033[30m"      /* Black */
@@ -58,13 +61,14 @@ namespace titovdp{
 
     struct ScoreInformation {
         tscore score;
-        const ScoredPushComputation *prev1;
-        const ScoredPushComputation *prev2;
+        shared_ptr<const ScoredPushComputation> prev1;
+        shared_ptr<const ScoredPushComputation> prev2;
     };
 
     struct ScoredPushComputation{
         PushComputation pc;
         ScoreInformation attr;
+        ScoredPushComputation(const PushComputation & pc, const ScoreInformation & info);
     };
 
     std::ostream& operator<<(std::ostream& out, const PushComputation & pc);
@@ -77,6 +81,9 @@ namespace titovdp{
     typedef BiGram<int> Arc;
     typedef std::unordered_set<Arc> ArcSet;
     typedef std::unordered_map<PushComputation, ScoreInformation> PCHashTable;
+    typedef shared_ptr<ScoredPushComputation> SPCPtr;
+    typedef shared_ptr<const ScoredPushComputation> cSPCPtr;
+    typedef std::unordered_map<PushComputation, SPCPtr> PCHashT;
     typedef std::unordered_set<Deduction> DeductionSet;
 
     PushComputation reduce_pc(const PushComputation & pc1, const PushComputation & pc2);
@@ -107,8 +114,8 @@ namespace std {
             hash_combine(seed, pc.x);
             hash_combine(seed, pc.y);
             hash_combine(seed, pc.z);
-            hash_combine(seed, pc.jls);
-            hash_combine(seed, pc.jrs);
+          //  hash_combine(seed, pc.jls);
+          //  hash_combine(seed, pc.jrs);
             hash_combine(seed, pc.jz_connected);
             hash_combine(seed, pc.zj_connected);
             hash_combine(seed, pc.jy_connected);
