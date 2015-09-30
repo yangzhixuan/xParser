@@ -34,16 +34,52 @@ namespace titovdp {
             && pc1.x == pc2.x
             && pc1.y == pc2.y
             && pc1.z == pc2.z
-            //      && pc1.jls == pc2.jls
-            //      && pc1.jrs == pc2.jrs
+            && pc1.jls == pc2.jls
+            && pc1.jrs == pc2.jrs
             && pc1.yj_connected == pc2.yj_connected
             && pc1.jy_connected == pc2.jy_connected
             && pc1.zj_connected == pc2.zj_connected
             && pc1.jz_connected == pc2.jz_connected
-            && pc1.yz_swapped == pc2.yz_swapped) {
+            && pc1.yz_swapped == pc2.yz_swapped ){
             return true;
         }
         return false;
+    }
+
+    bool PCMergeEqual::operator()(const PushComputation &pc1, const PushComputation &pc2) const {
+        if (pc1.i == pc2.i
+            && pc1.j == pc2.j
+            && pc1.x == pc2.x
+            && pc1.y == pc2.y
+            && pc1.z == pc2.z
+        //    && pc1.jls == pc2.jls
+        //    && pc1.jrs == pc2.jrs
+            && pc1.yj_connected == pc2.yj_connected
+            && pc1.jy_connected == pc2.jy_connected
+        //    && pc1.zj_connected == pc2.zj_connected
+        //    && pc1.jz_connected == pc2.jz_connected
+        //    && pc1.yz_swapped == pc2.yz_swapped
+            ){
+            return true;
+        }
+        return false;
+    }
+
+    size_t PCMergeHash::operator()(const PushComputation &pc) const {
+        size_t seed = 0;
+        hash_combine(seed, pc.i);
+        hash_combine(seed, pc.j);
+        hash_combine(seed, pc.x);
+        hash_combine(seed, pc.y);
+        hash_combine(seed, pc.z);
+        // hash_combine(seed, pc.jls);
+        // hash_combine(seed, pc.jrs);
+        // hash_combine(seed, pc.jz_connected);
+        // hash_combine(seed, pc.zj_connected);
+        hash_combine(seed, pc.jy_connected);
+        hash_combine(seed, pc.yj_connected);
+        // hash_combine(seed, pc.yz_swapped);
+        return seed;
     }
 
     bool operator==(const Deduction &d1, const Deduction &d2) {
@@ -110,6 +146,7 @@ namespace titovdp {
         pc.yz_swapped = 0;
         return pc;
     }
+
 
     std::ostream &operator<<(std::ostream &out, const Deduction &d) {
         if (d.type == REDUCE) {

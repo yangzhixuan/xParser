@@ -1,7 +1,7 @@
-cmake_minimum_required(VERSION 3.3)
+#cmake_minimum_required(VERSION 3.3)
 project(xParser)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -march=native -Ofast -funroll-loops")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -march=native -funroll-loops -O2")
 
 set(SOURCE_FILES
         common/parser/implementations/arceager/arceager_depparser.h

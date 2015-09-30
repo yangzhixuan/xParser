@@ -2,6 +2,7 @@
 #include <stack>
 #include <sstream>
 #include <algorithm>
+#include <cstring>
 
 #include "macros_base.h"
 

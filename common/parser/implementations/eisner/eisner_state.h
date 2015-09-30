@@ -12,7 +12,7 @@ namespace eisner {
         ScoreWithSplit l2r, r2l, l2r_im, r2l_im;
 
     public:
-        static enum STATE {
+        enum STATE {
             L2R_COMP = 1,
             R2L_COMP,
             L2R_IM_COMP,

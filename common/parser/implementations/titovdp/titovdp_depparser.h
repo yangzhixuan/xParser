@@ -11,8 +11,8 @@
 #include "common/parser/agenda.h"
 
 namespace titovdp {
-    const int BEAM_SIZE = 12;
-    const int OUTPUT_STEP = 100;
+    const int BEAM_SIZE = 16;
+    const int OUTPUT_STEP = 50;
 
     class DepParser : public DepParserBase {
     public:

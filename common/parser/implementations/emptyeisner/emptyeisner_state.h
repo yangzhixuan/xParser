@@ -17,7 +17,7 @@ namespace emptyeisner {
         ScoreWithSplit l2r, r2l;
 
     public:
-        static enum STATE {
+        enum STATE {
             JUX = 1,
             L2R_SOLID_BOTH,
             R2L_SOLID_BOTH,

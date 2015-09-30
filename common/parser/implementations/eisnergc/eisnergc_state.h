@@ -13,7 +13,7 @@ namespace eisnergc {
         ScoreWithSplit l2r[MAX_SENTENCE_SIZE], r2l[MAX_SENTENCE_SIZE], l2r_im[MAX_SENTENCE_SIZE], r2l_im[MAX_SENTENCE_SIZE];
 
     public:
-        static enum State {
+        enum State {
             L2R_COMP = 1,
             R2L_COMP,
             L2R_IM_COMP,

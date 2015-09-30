@@ -3,6 +3,7 @@
 //
 
 #include <deque>
+#include <cstring>
 #include <assert.h>
 #include "titovdp_depparser.h"
 

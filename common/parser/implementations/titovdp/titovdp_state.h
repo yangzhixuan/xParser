@@ -43,7 +43,8 @@ namespace titovdp {
 
     struct PushComputation {
         int i, j, x, y, z;
-        int jls, jrs;           // j's left/right-most child
+        int jls;
+        int jrs;           // j's left/right-most child
         int yz_swapped;
         int jz_connected;
         int zj_connected;
@@ -77,6 +78,14 @@ namespace titovdp {
                         const shared_ptr<const ScoredPushComputation> &p2);
     };
 
+    struct PCMergeHash {
+        size_t operator()(const PushComputation & pc) const;
+    };
+
+    struct PCMergeEqual {
+        bool operator()(const PushComputation & pc, const PushComputation & pc2) const;
+    };
+
     std::ostream &operator<<(std::ostream &out, const PushComputation &pc);
 
     std::ostream &operator<<(std::ostream &out, const Deduction &pc);
@@ -96,7 +105,7 @@ namespace titovdp {
     typedef std::unordered_map<PushComputation, ScoreInformation> PCHashTable;
     typedef shared_ptr<ScoredPushComputation> SPCPtr;
     typedef shared_ptr<const ScoredPushComputation> cSPCPtr;
-    typedef std::unordered_map<PushComputation, SPCPtr> PCHashT;
+    typedef std::unordered_map<PushComputation, SPCPtr, PCMergeHash, PCMergeEqual> PCHashT;
     typedef std::unordered_set<Deduction> DeductionSet;
 
     PushComputation reduce_pc(const PushComputation &pc1, const PushComputation &pc2);
@@ -129,8 +138,8 @@ namespace std {
             hash_combine(seed, pc.x);
             hash_combine(seed, pc.y);
             hash_combine(seed, pc.z);
-            //  hash_combine(seed, pc.jls);
-            //  hash_combine(seed, pc.jrs);
+            hash_combine(seed, pc.jls);
+            hash_combine(seed, pc.jrs);
             hash_combine(seed, pc.jz_connected);
             hash_combine(seed, pc.zj_connected);
             hash_combine(seed, pc.jy_connected);

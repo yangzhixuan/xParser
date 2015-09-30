@@ -69,6 +69,18 @@ namespace titovdp {
 
         READ(S0wS1wB0w);
 
+        READ(B0Lw);
+        READ(B0Lp);
+        READ(B0Rw);
+        READ(B0Rp);
+
+        READ(B1w);
+        READ(B1p);
+        READ(B1wp);
+
+        READ(B2w);
+        READ(B2p);
+        READ(B2wp);
         input.close();
 #undef READ
     }
@@ -125,6 +137,18 @@ namespace titovdp {
 
         SAVE(S0wS1wB0w);
 
+        SAVE(B0Lw);
+        SAVE(B0Lp);
+        SAVE(B0Rw);
+        SAVE(B0Rp);
+
+        SAVE(B1w);
+        SAVE(B1p);
+        SAVE(B1wp);
+
+        SAVE(B2w);
+        SAVE(B2p);
+        SAVE(B2wp);
         output.close();
 #undef SAVE
     }
@@ -171,6 +195,18 @@ namespace titovdp {
 
         AVG(S0wS1wB0w);
 
+        AVG(B0Lw);
+        AVG(B0Lp);
+        AVG(B0Rw);
+        AVG(B0Rp);
+
+        AVG(B1w);
+        AVG(B1p);
+        AVG(B1wp);
+
+        AVG(B2w);
+        AVG(B2p);
+        AVG(B2wp);
 #undef AVG
     }
 

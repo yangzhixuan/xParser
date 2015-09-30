@@ -3,6 +3,7 @@
 //
 
 #include <map>
+#include <algorithm>
 #include <queue>
 #include <common/token/word.h>
 #include <common/token/pos.h>
@@ -58,7 +59,7 @@ namespace titovdp {
             return;
         }
 
-        if (nRound > 2000) {
+        if (sentenceLength < 10) {
             std::cout << "round " << nRound << " gold start:\n";
             std::cout << YELLOW;
             for (auto d : goldDeductions) {
@@ -286,7 +287,8 @@ namespace titovdp {
             candidates[pc] = spc;
         } else {
             if (score_info.score > candidates[pc]->attr.score) {
-                candidates[pc]->attr = score_info;
+                std::shared_ptr<ScoredPushComputation> spc(new ScoredPushComputation(pc, score_info));
+                candidates[pc] = spc;
             } else {
                 return;
             }

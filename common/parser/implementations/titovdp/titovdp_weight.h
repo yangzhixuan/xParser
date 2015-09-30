@@ -69,6 +69,19 @@ namespace titovdp {
         POSTagSet2IntMap S1pB0p[NUM_TRANSITION_TYPES];
 
         ThreeWordsIntMap S0wS1wB0w[NUM_TRANSITION_TYPES];
+
+        WordIntMap B0Lw[NUM_TRANSITION_TYPES];
+        POSTagIntMap B0Lp[NUM_TRANSITION_TYPES];
+        WordIntMap B0Rw[NUM_TRANSITION_TYPES];
+        POSTagIntMap B0Rp[NUM_TRANSITION_TYPES];
+
+        WordIntMap B1w[NUM_TRANSITION_TYPES];
+        POSTagIntMap B1p[NUM_TRANSITION_TYPES];
+        WordPOSTagIntMap B1wp[NUM_TRANSITION_TYPES];
+
+        WordIntMap B2w[NUM_TRANSITION_TYPES];
+        POSTagIntMap B2p[NUM_TRANSITION_TYPES];
+        WordPOSTagIntMap B2wp[NUM_TRANSITION_TYPES];
     public:
         void loadScores();
 

@@ -45,6 +45,17 @@ namespace titovdp {
         int jword = getWordinSentence(pc.j).first();
         int jtag = getWordinSentence(pc.j).second();
 
+        int j1word = getWordinSentence(pc.j + 1).first();
+        int j1tag = getWordinSentence(pc.j + 1).second();
+
+        int j2word = getWordinSentence(pc.j + 2).first();
+        int j2tag = getWordinSentence(pc.j + 2).second();
+
+        int jlword = getWordinStack(pc.jls).first();
+        int jlpos = getWordinStack(pc.jls).second();
+        int jrword = getWordinStack(pc.jrs).first();
+        int jrpos = getWordinStack(pc.jrs).second();
+
         // int xword = getWordinSentence(pc.x).first();
         // int xtag = getWordinSentence(pc.x).second();
         int distance = pc.j - pc.z;
@@ -111,6 +122,30 @@ namespace titovdp {
 
         w3.refer(zword, yword, jword);
         GETUPDATE(S0wS1wB0w[t], w3);
+
+        // w.refer(jlword, 0);
+        // GETUPDATE(B0Lw[t], w);
+        // p.refer(jlpos, 0);
+        // GETUPDATE(B0Lp[t], p);
+
+        // w.refer(jrword, 0);
+        // GETUPDATE(B0Rw[t], w);
+        // p.refer(jrpos, 0);
+        // GETUPDATE(B0Rp[t], p);
+
+        w.refer(j1word, 0);
+        GETUPDATE(B1w[t], w);
+        p.refer(j1tag, 0);
+        GETUPDATE(B1p[t], p);
+        wp.refer(j1word, j1tag, 0);
+        GETUPDATE(B1wp[t], wp);
+
+        // w.refer(j2word, 0);
+        // GETUPDATE(B2w[t], w);
+        // p.refer(j2tag, 0);
+        // GETUPDATE(B2p[t], p);
+        // wp.refer(j2word, j1tag, 0);
+        // GETUPDATE(B2wp[t], wp);
         return retval;
     }
 
