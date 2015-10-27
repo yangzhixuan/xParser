@@ -34,22 +34,31 @@ namespace titovdp {
 
     enum Transition {
         SHIFT,
-        LEFT_ARC,
-        RIGHT_ARC,
         SWAP,
         REDUCE,
+        LA_SHIFT,
+        LA_SWAP,
+        LA_REDUCE,
+        RA_SHIFT,
+        RA_SWAP,
+        RA_REDUCE,
         NUM_TRANSITION_TYPES
     };
 
+
+    extern Transition shift_actions[];
+    extern Transition swap_actions[];
+    extern Transition reduce_actions[];
+
+    const int NUM_SHIFT_ACTIONS = 3;
+    const int NUM_SWAP_ACTIONS = 3;
+    const int NUM_REDUCE_ACTIONS = 3;
+
     struct PushComputation {
-        int i, j, x, y, z;
+        int i, j, y, z;
         int jls;
-        int jrs;           // j's left/right-most child
-        int yz_swapped;
-        int jz_connected;
-        int zj_connected;
-        int jy_connected;
-        int yj_connected;
+        int yls, yrs;
+        int zls, zrs;
     };
 
     struct Deduction {
@@ -62,8 +71,11 @@ namespace titovdp {
 
     struct ScoreInformation {
         tscore score;
+        tscore prefix_score;
+        Transition type;
         shared_ptr<const ScoredPushComputation> prev1;
         shared_ptr<const ScoredPushComputation> prev2;
+        shared_ptr<std::vector<shared_ptr<const ScoredPushComputation>>> predictor;
     };
 
     struct ScoredPushComputation {
@@ -72,6 +84,7 @@ namespace titovdp {
 
         ScoredPushComputation(const PushComputation &pc, const ScoreInformation &info);
     };
+    typedef std::vector<shared_ptr<const ScoredPushComputation>> PredictorSet;
 
     struct PtrSPCCompare {
         bool operator()(const shared_ptr<const ScoredPushComputation> &p1,
@@ -100,6 +113,10 @@ namespace titovdp {
 
     bool operator>(const ScoredPushComputation &pc1, const ScoredPushComputation &pc2);
 
+    bool is_reduce(Transition t);
+    bool is_shift(Transition t);
+
+
     typedef BiGram<int> Arc;
     typedef std::unordered_set<Arc> ArcSet;
     typedef std::unordered_map<PushComputation, ScoreInformation> PCHashTable;
@@ -108,11 +125,11 @@ namespace titovdp {
     typedef std::unordered_map<PushComputation, SPCPtr, PCMergeHash, PCMergeEqual> PCHashT;
     typedef std::unordered_set<Deduction> DeductionSet;
 
-    PushComputation reduce_pc(const PushComputation &pc1, const PushComputation &pc2);
+    PushComputation swap_pc(const PushComputation &pc, Transition action);
+    PushComputation shift_pc(const PushComputation &pc, Transition action);
+    PushComputation reduce_pc(const PushComputation &pc1, const PushComputation &pc2, Transition action);
 
-    PushComputation singleton_pc(const PushComputation &pc, Transition action);
-
-    PushComputation shift_pc(int x, int i);
+    std::string action_str(Transition t);
 }
 
 namespace std {
@@ -122,7 +139,9 @@ namespace std {
             size_t seed = 0;
             hash_combine(seed, d.pc1);
             hash_combine(seed, (int) d.type);
-            if (d.type == titovdp::REDUCE) {
+            if (d.type == titovdp::REDUCE
+                || d.type == titovdp::LA_REDUCE
+                || d.type == titovdp::RA_REDUCE) {
                 hash_combine(seed, d.pc2);
             }
             return seed;
@@ -135,16 +154,13 @@ namespace std {
             size_t seed = 0;
             hash_combine(seed, pc.i);
             hash_combine(seed, pc.j);
-            hash_combine(seed, pc.x);
             hash_combine(seed, pc.y);
             hash_combine(seed, pc.z);
             hash_combine(seed, pc.jls);
-            hash_combine(seed, pc.jrs);
-            hash_combine(seed, pc.jz_connected);
-            hash_combine(seed, pc.zj_connected);
-            hash_combine(seed, pc.jy_connected);
-            hash_combine(seed, pc.yj_connected);
-            hash_combine(seed, pc.yz_swapped);
+            hash_combine(seed, pc.yls);
+            hash_combine(seed, pc.yrs);
+            hash_combine(seed, pc.zls);
+            hash_combine(seed, pc.zrs);
             return seed;
         }
     };

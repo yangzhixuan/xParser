@@ -33,6 +33,18 @@ int encodeLinkDistanceOrDirection(const int &hi, const int &di, bool dir) {
     return diff;
 }
 
+int encodeDistance(int st, int ed) {
+    int dis = ed - st;
+    if(dis > 10) {
+        return 6;
+    } else if(dis > 5) {
+        return 5;
+    } else {
+        return dis;
+    }
+}
+
+
 // read from SemEval SDP format
 std::istream &operator>>(std::istream &input, DependencyGraph &graph) {
     graph.clear();

@@ -30,8 +30,6 @@ namespace titovdp {
         numGoldArcs = 0;
         numCorrectArcs = 0;
         cast_to(chart, &chart_mem[1][1]);
-        cast_to(chart_sortbyx, &chart_sortbyx_mem[1][1]);
-        cast_to(chart_sortbyz, &chart_sortbyz_mem[1][1]);
         for (int i = 0; i < MAX_SENTENCE_SIZE; i++) {
             for (int j = 0; j < MAX_SENTENCE_SIZE; j++) {
                 chart[i][j].clear();
@@ -59,20 +57,27 @@ namespace titovdp {
             return;
         }
 
-        if (sentenceLength < 10) {
+        if (0 && nRound == 6) {
             std::cout << "round " << nRound << " gold start:\n";
             std::cout << YELLOW;
+            tscore goldScore = 0;
             for (auto d : goldDeductions) {
                 std::cout << d;
+                if(is_reduce(d.type)) {
+                    goldScore += getOrUpdateScore(d.pc1, d.pc2, d.type, 0);
+                } else {
+                    goldScore += getOrUpdateScore(d.pc1, d.type, 0);
+                }
                 if (decodedDeductions.find(d) == decodedDeductions.end()) {
                     std::cout << ", not decoded";
+
                     PushComputation p;
-                    if (d.type == REDUCE) {
-                        p = reduce_pc(d.pc1, d.pc2);
-                    } else if (d.type == SHIFT) {
-                        p = d.pc1;
+                    if (is_reduce(d.type)) {
+                        p = reduce_pc(d.pc1, d.pc2, d.type);
+                    } else if(is_shift(d.type)) {
+                        p = shift_pc(d.pc1, d.type);
                     } else {
-                        p = singleton_pc(d.pc1, d.type);
+                        p = swap_pc(d.pc1, d.type);
                     }
                     int found = 0;
                     for (int k = 0; k < chart[p.i][p.j].size(); k++) {
@@ -89,6 +94,7 @@ namespace titovdp {
             }
             std::cout << RESET;
             std::cout << "end;\n";
+            std::cerr<<"gold score: "<<goldScore<<std::endl;
 
             std::cout << BLUE;
             for (auto d : decodedDeductions) {
@@ -108,8 +114,8 @@ namespace titovdp {
             if (decodedDeductions.find(d) != decodedDeductions.end()) {
                 continue;
             }
-            if (d.type == REDUCE) {
-                getOrUpdateScore(d.pc1, d.pc2, 1);
+            if (is_reduce(d.type)) {
+                getOrUpdateScore(d.pc1, d.pc2, d.type, 1);
             } else {
                 getOrUpdateScore(d.pc1, d.type, 1);
             }
@@ -122,8 +128,8 @@ namespace titovdp {
                 numCorrectDeductions += 1;
                 continue;
             }
-            if (d.type == REDUCE) {
-                getOrUpdateScore(d.pc1, d.pc2, -1);
+            if (is_reduce(d.type)) {
+                getOrUpdateScore(d.pc1, d.pc2, d.type, -1);
             } else {
                 getOrUpdateScore(d.pc1, d.type, -1);
             }
@@ -157,98 +163,133 @@ namespace titovdp {
         }
         // std::cerr<<"trained one. "<<"decoded: "<< decodedDeductions.size()<< ", gold: " << goldDeductions.size() <<
         //         "(round: "<<nRound<<")"<<std::endl;
+
+        if(error) {
+            std::cerr<<"retry " << nRound << "\n";
+            nRound--;
+            train(ref_sent);
+        }
     }
 
 
     void DepParser::decode() {
-        int i, j, k, x, len;
+        int i, j, k, idx, action;
         PushComputation pc;
         ScoreInformation score;
-        PCHashT candidates;
 
-        // Axioms: SHIFT computations
-        for (i = -1; i <= sentenceLength; i++) {
-            candidates.clear();
-            for (x = -1; x < i || /*virtual shift*/ (x == -1 && i == -1); x++) {
-                pc = shift_pc(x, i);
-                score.score = getOrUpdateScore(pc, SHIFT, 0);
-                score.prev1 = score.prev2 = nullptr;
-                addItem(candidates, pc, score);
+        // Axioms: Virtual Shift
+        pc.i = -1, pc.j = 0, pc.y = -1, pc.z = -1;
+        pc.jls = pc.yls = pc.yrs = pc.zls = pc.zrs = -1;
+        score.score = 0, score.type = SHIFT;
+        score.prefix_score = 0;
+        score.prev1 = score.prev2 = nullptr;
+        score.predictor = shared_ptr<PredictorSet>(new PredictorSet);
+        candidates[1].clear();
+        addItem(candidates[1], pc, score);
+        gatherBeam(candidates[1], -1, 0);
+
+        for(j = 1; j <= sentenceLength + 1; j++) {
+            for(i = -1; i < j; i++) {
+                candidates[j - i].clear();
             }
-            gatherBeam(candidates, i, i + 1);
-        }
-
-        for (len = 2; len <= sentenceLength + 2; len++) {
-            for (i = -1; i <= sentenceLength; i++) {
-                j = i + len;
-                if (j > sentenceLength + 1) {
-                    break;
-                }
-                candidates.clear();
-                for (k = i + 1; k <= j - 1; k++) {
-                    int *p1, *p2, *p1_end, *p2_end;
-                    p1 = &chart_sortbyz[i][k][0];
-                    p1_end = p1 + chart[i][k].size();
-                    p2 = &chart_sortbyx[k][j][0];
-                    p2_end = p2 + chart[k][j].size();
-                    while (p1 != p1_end) {
-                        while (p2 != p2_end && chart[k][j][*p2]->pc.x < chart[i][k][*p1]->pc.z) {
-                            p2++;
+            // SHIFT
+            i = j-1;
+            for(k = -1; k < i; k++) {
+                // [k, *, *, j-1]  --> [j-1, *, *, j]
+                for(idx = 0; idx < chart[k][i].size(); idx++) {
+                    for(action = 0; action < NUM_SHIFT_ACTIONS; action++) {
+                        Transition act = shift_actions[action];
+                        if(!actionApplicable(chart[k][i][idx]->pc, act)) {
+                            continue;
                         }
-                        if (p2 == p2_end) {
-                            break;
-                        }
-                        if (chart[k][j][*p2]->pc.x == chart[i][k][*p1]->pc.z) {
-                            int *p3 = p2;
-                            while (p3 != p2_end && chart[k][j][*p3]->pc.x == chart[i][k][*p1]->pc.z) {
-                                pc = reduce_pc(chart[i][k][*p1]->pc, chart[k][j][*p3]->pc);
-
-                                score.score = chart[i][k][*p1]->attr.score + chart[k][j][*p3]->attr.score +
-                                              getOrUpdateScore(chart[i][k][*p1]->pc, chart[k][j][*p3]->pc, 0);
-                                score.prev1 = chart[i][k][*p1];
-                                score.prev2 = chart[k][j][*p3];
-
-                                addItem(candidates, pc, score);
-                                p3++;
-                            }
-                        }
-                        p1++;
+                        pc = shift_pc(chart[k][i][idx]->pc, act);
+                        score.type = act;
+                        score.prev1 = chart[k][i][idx];
+                        score.prev2 = nullptr;
+                        score.predictor = shared_ptr<PredictorSet>(new PredictorSet);
+                        score.predictor->push_back(chart[k][i][idx]);
+                        score.score = getOrUpdateScore(chart[k][i][idx]->pc, act, 0);
+                        score.prefix_score = chart[k][i][idx]->attr.prefix_score + score.score;
+                        addItem(candidates[1], pc, score);
                     }
                 }
-                gatherBeam(candidates, i, j);
+            }
+
+            // REDUCE
+            for(i = j - 1; i >= -1; i--) {
+                gatherBeam(candidates[j - i], i, j);
+                for(idx = 0; idx < chart[i][j].size(); idx++) {
+                    auto pc2 = chart[i][j][idx];
+                    for(auto pc1 : *(pc2->attr.predictor)) {
+                        for(action = 0; action < NUM_REDUCE_ACTIONS; action++) {
+                            Transition act = reduce_actions[action];
+                            if(!actionApplicable(pc2->pc, act)) {
+                                continue;
+                            }
+                            pc = reduce_pc(pc1->pc, pc2->pc, act);
+                            score.type = act;
+                            score.prev1 = pc1;
+                            score.prev2 = pc2;
+                            tscore delta = getOrUpdateScore(pc1->pc, pc2->pc, act, 0);
+                            score.score = pc1->attr.score + pc2->attr.score + delta;
+                            score.prefix_score = pc1->attr.prefix_score + pc2->attr.score + delta;
+                            score.predictor = pc1->attr.predictor;
+                            addItem(candidates[pc.j - pc.i], pc, score);
+                        }
+                    }
+                }
             }
         }
     }
 
-    void DepParser::traversePC(cSPCPtr ppc) {
+    bool DepParser::actionApplicable(const PushComputation & pc, Transition t) {
+        if(is_shift(t)) {
+            if( (t == LA_SHIFT || t == RA_SHIFT) && pc.z == -1 ) {
+                return false;
+            }
+            return pc.j <= sentenceLength;
+        } else if(is_reduce(t)) {
+            if( (t == LA_REDUCE || t == RA_REDUCE) && pc.j > sentenceLength) {
+                return false;
+            }
+            return pc.z != -1;
+        } else {
+            if( (t == LA_SWAP || t == RA_SWAP) && pc.j > sentenceLength) {
+                return false;
+            }
+            return pc.z != -1 && pc.y != -1;
+        }
+    }
+
+    void DepParser::traversePC(cSPCPtr pc) {
         Deduction d;
-        cSPCPtr pprev1 = ppc->attr.prev1;
-        cSPCPtr pprev2 = ppc->attr.prev2;
-        if (pprev1 == nullptr) {
-            d.pc1 = ppc->pc;
-            d.type = SHIFT;
+        if(is_reduce(pc->attr.type)) {
+            d.pc1 = pc->attr.prev1->pc;
+            d.pc2 = pc->attr.prev2->pc;
+            d.type = pc->attr.type;
+            decodedDeductions.insert(d);
+            traversePC(pc->attr.prev1);
+            traversePC(pc->attr.prev2);
+            return;
+        } else if(is_shift(pc->attr.type)) {
+            if(pc->attr.prev1 == nullptr) {
+                // virtual shift. no predecessor.
+                assert(pc->pc.j == 0);
+                return;
+            }
+            d.pc1 = pc->attr.prev1->pc;
+            d.type = pc->attr.type;
             decodedDeductions.insert(d);
             return;
-        }
-        if (pprev1 != nullptr && pprev2 != nullptr) {
-            d.pc1 = pprev1->pc;
-            d.pc2 = pprev2->pc;
-            d.type = REDUCE;
+        } else {
+            assert(pc != pc->attr.prev1);
+            d.pc1 = pc->attr.prev1->pc;
+            d.type = pc->attr.type;
+            //std::cerr<<"swap "<<d.pc1<<std::endl;
             decodedDeductions.insert(d);
-            traversePC(pprev1);
-            traversePC(pprev2);
+            traversePC(pc->attr.prev1);
             return;
         }
-        if (pprev1->pc.yz_swapped != ppc->pc.yz_swapped) {
-            d.type = SWAP;
-        } else if (pprev1->pc.zj_connected != ppc->pc.zj_connected) {
-            d.type = RIGHT_ARC;
-        } else if (pprev1->pc.jz_connected != ppc->pc.jz_connected) {
-            d.type = LEFT_ARC;
-        }
-        d.pc1 = pprev1->pc;
-        decodedDeductions.insert(d);
-        traversePC(pprev1);
     }
 
     void DepParser::decodeTransitions() {
@@ -266,71 +307,77 @@ namespace titovdp {
             std::cerr << "decode failed: goal not found" << std::endl;
             return;
         }
+        // std::cerr<<"decoded score: "<<pc->attr.score<<std::endl;
         traversePC(pc);
     }
 
     void DepParser::decodeArcs() {
         decodedArcs.clear();
         for (auto d : decodedDeductions) {
-            if (d.type == LEFT_ARC) {
+            if(d.type == LA_SHIFT || d.type == LA_SWAP) {
                 decodedArcs.insert(Arc(d.pc1.j, d.pc1.z));
-            } else if (d.type == RIGHT_ARC) {
+            }else if (d.type == LA_REDUCE){
+                decodedArcs.insert(Arc(d.pc2.j, d.pc2.z));
+            }else if(d.type == RA_SHIFT || d.type == RA_SWAP) {
                 decodedArcs.insert(Arc(d.pc1.z, d.pc1.j));
+            }else if (d.type == RA_REDUCE) {
+                decodedArcs.insert(Arc(d.pc2.z, d.pc2.j));
             }
         }
 
+    }
+
+    void DepParser::updateItem(PCHashT &candidates, const PushComputation &pc, const ScoreInformation &score_info) {
+        if(candidates.find(pc) == candidates.end()) {
+            shared_ptr<ScoredPushComputation> spc(new ScoredPushComputation(pc, score_info));
+            candidates[pc] = spc;
+        } else {
+            if(is_shift(score_info.type)) {
+                // shift. Merge predictor states
+                candidates[pc]->attr.predictor->insert(candidates[pc]->attr.predictor->begin(),
+                                                       score_info.predictor->begin(),
+                                                       score_info.predictor->end());
+                if(score_info.prefix_score > candidates[pc]->attr.prefix_score) {
+                    candidates[pc]->attr.prefix_score = score_info.prefix_score;
+                    candidates[pc]->attr.score = score_info.score;
+                    candidates[pc]->attr.prev1 = score_info.prev1;
+                    candidates[pc]->attr.prev2 = score_info.prev2;
+                    candidates[pc]->attr.type = score_info.type;
+                }
+            } else {
+                // non-shift. Maintain highest score
+                if(score_info.score > candidates[pc]->attr.score){
+                    candidates[pc]->attr = score_info;
+                }
+            }
+        }
     }
 
     void DepParser::addItem(PCHashT &candidates, const PushComputation &pc, const ScoreInformation &score_info) {
-        if (candidates.find(pc) == candidates.end()) {
-            std::shared_ptr<ScoredPushComputation> spc(new ScoredPushComputation(pc, score_info));
-            candidates[pc] = spc;
-        } else {
-            if (score_info.score > candidates[pc]->attr.score) {
-                std::shared_ptr<ScoredPushComputation> spc(new ScoredPushComputation(pc, score_info));
-                candidates[pc] = spc;
-            } else {
-                return;
+        updateItem(candidates, pc, score_info);
+        // try SWAP actions
+        for(int action = 0; action < NUM_SWAP_ACTIONS; action++) {
+            if(!actionApplicable(pc, swap_actions[action])) {
+                continue;
             }
-        }
-
-        ScoreInformation newinfo;
-        newinfo.prev1 = candidates[pc];
-        newinfo.prev2 = nullptr;
-        if (!pc.zj_connected && pc.z >= 0 && pc.j <= sentenceLength) {
-            newinfo.score = score_info.score + getOrUpdateScore(pc, RIGHT_ARC, 0);
-            PushComputation newpc = singleton_pc(pc, RIGHT_ARC);
-            addItem(candidates, newpc, newinfo);
-        }
-        if (!pc.jz_connected && pc.z >= 0 && pc.j <= sentenceLength) {
-            newinfo.score = score_info.score + getOrUpdateScore(pc, LEFT_ARC, 0);
-            PushComputation newpc = singleton_pc(pc, LEFT_ARC);
-            addItem(candidates, newpc, newinfo);
-        }
-        if (!pc.yz_swapped && pc.y >= 0 && pc.z >= 0) {
-            newinfo.score = score_info.score + getOrUpdateScore(pc, SWAP, 0);
-            PushComputation newpc = singleton_pc(pc, SWAP);
-            addItem(candidates, newpc, newinfo);
+            PushComputation newpc = swap_pc(pc, swap_actions[action]);
+            ScoreInformation newscore;
+            tscore delta = getOrUpdateScore(pc, swap_actions[action], 0);
+            newscore.score = score_info.score + delta;
+            newscore.prefix_score = score_info.prefix_score + delta;
+            newscore.type = swap_actions[action];
+            newscore.prev1 = candidates[pc];
+            newscore.prev2 = nullptr;
+            newscore.predictor = score_info.predictor;
+            updateItem(candidates, newpc, newscore);
         }
     }
+
 
     void DepParser::gatherBeam(const PCHashT &candidates, int i, int j) {
         chart[i][j].clear();
         for (auto iter : candidates) {
             chart[i][j].insertItem(iter.second);
         }
-
-        for (int k = 0; k < chart[i][j].size(); k++) {
-            chart_sortbyx[i][j][k] = k;
-            chart_sortbyz[i][j][k] = k;
-        }
-        std::sort(&chart_sortbyz[i][j][0], (&chart_sortbyz[i][j][0]) + chart[i][j].size(),
-                  [&](const int &p1, const int &p2) {
-                      return chart[i][j][p1]->pc.z < chart[i][j][p2]->pc.z;
-                  });
-        std::sort(&chart_sortbyx[i][j][0], (&chart_sortbyx[i][j][0]) + chart[i][j].size(),
-                  [&](const int &p1, const int &p2) {
-                      return chart[i][j][p1]->pc.x < chart[i][j][p2]->pc.x;
-                  });
     }
 }

@@ -17,6 +17,7 @@ namespace titovdp {
 
     void Weight::loadScores() {
         if (m_sReadPath.empty()) {
+            std::cout << "empty file. Create new Weight."<<std::endl;
             return;
         }
         std::ifstream input(m_sReadPath);
@@ -33,54 +34,110 @@ namespace titovdp {
             input >> feat[i];    \
         }
 
-        READ(S0w);
-        READ(S0wd);
-        READ(S0p);
-        READ(S0pd);
-        READ(S0wp);
 
+
+        READ(S0w);
+        READ(S0p);
         READ(S1w);
         READ(S1p);
-        READ(S1wp);
-
         READ(B0w);
-        READ(B0wd);
         READ(B0p);
-        READ(B0pd);
-        READ(B0wp);
 
-        READ(HS0w);
-        READ(HS0p);
-        READ(HS0wp);
+        // unigram contexts
+        // z contexts:
+        READ(S0iw);
+        READ(S0iw);
+        READ(S0iw);
+        READ(S0iw);
 
+        READ(S0iwS0jw);
+        READ(S0iwS0jw);
+        READ(S0iwS0jw);
+
+        // j contexts
+        READ(B0iw);
+        READ(B0iw);
+        READ(B0iw);
+        READ(B0iw);
+
+        READ(B0iwB0jw);
+        READ(B0iwB0jw);
+        READ(B0iwB0jw);
+
+        // z contexts:
+        READ(S0ip);
+        READ(S0ip);
+        READ(S0ip);
+        READ(S0ip);
+
+        READ(S0ipS0jp);
+        READ(S0ipS0jp);
+        READ(S0ipS0jp);
+
+        // j contexts
+        READ(B0ip);
+        READ(B0ip);
+        READ(B0ip);
+        READ(B0ip);
+
+        READ(B0ipB0jp);
+        READ(B0ipB0jp);
+        READ(B0ipB0jp);
+
+
+        // bigrams
+        // z + j
         READ(S0wB0w);
-        READ(S0wB0wd);
-        READ(S1wB0w);
-
         READ(S0wB0p);
         READ(B0wS0p);
+        READ(S0pB0p);
+        READ(S0wB0wS0p);
+        READ(S0wB0wB0p);
+        READ(S0wS0pB0p);
+        READ(B0wS0pB0p);
+        READ(S0wB0wS0pB0p);
 
+        // z + j + dis
+        READ(S0wB0wD);
+        READ(S0wB0pD);
+        READ(B0wS0pD);
+        READ(S0pB0pD);
+
+        // y + j
+        READ(S1wB0w);
         READ(S1wB0p);
         READ(B0wS1p);
-
-        READ(S0pB0p);
-        READ(S0pB0pd);
         READ(S1pB0p);
+        READ(S1wB0wS1p);
+        READ(S1wB0wB0p);
+        READ(S1wS1pB0p);
+        READ(B0wS1pB0p);
+        READ(S1wB0wS1pB0p);
 
-        READ(S0wS1wB0w);
+        // y + j + dis
+        READ(S1wB0wD);
+        READ(S1wB0pD);
+        READ(B0wS1pD);
+        READ(S1pB0pD);
 
-        READ(B0Lw);
-        READ(B0Lp);
-        READ(B0Rw);
-        READ(B0Rp);
+        // z + y
+        READ(S0wS1w);
+        READ(S0wS1p);
+        READ(S1wS0p);
+        READ(S0pS1p);
+        READ(S0wS1wS0p);
+        READ(S0wS1wS1p);
+        READ(S0wS0pS1p);
+        READ(S1wS0pS1p);
+        READ(S0wS1wS0pS1p);
 
-        READ(B1w);
-        READ(B1p);
-        READ(B1wp);
+        // trigram
+        // y + j + z
+        READ(S0wS1pB0p);
+        READ(S1wS0pB0p);
+        READ(B0wS0pS1p);
+        READ(S0pS1pB0p);
 
-        READ(B2w);
-        READ(B2p);
-        READ(B2wp);
         input.close();
 #undef READ
     }
@@ -102,53 +159,107 @@ namespace titovdp {
         }
 
         SAVE(S0w);
-        SAVE(S0wd);
         SAVE(S0p);
-        SAVE(S0pd);
-        SAVE(S0wp);
-
         SAVE(S1w);
         SAVE(S1p);
-        SAVE(S1wp);
-
         SAVE(B0w);
-        SAVE(B0wd);
         SAVE(B0p);
-        SAVE(B0pd);
-        SAVE(B0wp);
 
-        SAVE(HS0w);
-        SAVE(HS0p);
-        SAVE(HS0wp);
+        // unigram contexts
+        // z contexts:
+        SAVE(S0iw);
+        SAVE(S0iw);
+        SAVE(S0iw);
+        SAVE(S0iw);
 
+        SAVE(S0iwS0jw);
+        SAVE(S0iwS0jw);
+        SAVE(S0iwS0jw);
+
+        // j contexts
+        SAVE(B0iw);
+        SAVE(B0iw);
+        SAVE(B0iw);
+        SAVE(B0iw);
+
+        SAVE(B0iwB0jw);
+        SAVE(B0iwB0jw);
+        SAVE(B0iwB0jw);
+
+        // z contexts:
+        SAVE(S0ip);
+        SAVE(S0ip);
+        SAVE(S0ip);
+        SAVE(S0ip);
+
+        SAVE(S0ipS0jp);
+        SAVE(S0ipS0jp);
+        SAVE(S0ipS0jp);
+
+        // j contexts
+        SAVE(B0ip);
+        SAVE(B0ip);
+        SAVE(B0ip);
+        SAVE(B0ip);
+
+        SAVE(B0ipB0jp);
+        SAVE(B0ipB0jp);
+        SAVE(B0ipB0jp);
+
+
+        // bigrams
+        // z + j
         SAVE(S0wB0w);
-        SAVE(S0wB0wd);
-        SAVE(S1wB0w);
-
         SAVE(S0wB0p);
         SAVE(B0wS0p);
+        SAVE(S0pB0p);
+        SAVE(S0wB0wS0p);
+        SAVE(S0wB0wB0p);
+        SAVE(S0wS0pB0p);
+        SAVE(B0wS0pB0p);
+        SAVE(S0wB0wS0pB0p);
 
+        // z + j + dis
+        SAVE(S0wB0wD);
+        SAVE(S0wB0pD);
+        SAVE(B0wS0pD);
+        SAVE(S0pB0pD);
+
+        // y + j
+        SAVE(S1wB0w);
         SAVE(S1wB0p);
         SAVE(B0wS1p);
-
-        SAVE(S0pB0p);
-        SAVE(S0pB0pd);
         SAVE(S1pB0p);
+        SAVE(S1wB0wS1p);
+        SAVE(S1wB0wB0p);
+        SAVE(S1wS1pB0p);
+        SAVE(B0wS1pB0p);
+        SAVE(S1wB0wS1pB0p);
 
-        SAVE(S0wS1wB0w);
+        // y + j + dis
+        SAVE(S1wB0wD);
+        SAVE(S1wB0pD);
+        SAVE(B0wS1pD);
+        SAVE(S1pB0pD);
 
-        SAVE(B0Lw);
-        SAVE(B0Lp);
-        SAVE(B0Rw);
-        SAVE(B0Rp);
+        // z + y
+        SAVE(S0wS1w);
+        SAVE(S0wS1p);
+        SAVE(S1wS0p);
+        SAVE(S0pS1p);
+        SAVE(S0wS1wS0p);
+        SAVE(S0wS1wS1p);
+        SAVE(S0wS0pS1p);
+        SAVE(S1wS0pS1p);
+        SAVE(S0wS1wS0pS1p);
 
-        SAVE(B1w);
-        SAVE(B1p);
-        SAVE(B1wp);
+        // trigram
+        // y + j + z
+        SAVE(S0wS1pB0p);
+        SAVE(S1wS0pB0p);
+        SAVE(B0wS0pS1p);
+        SAVE(S0pS1pB0p);
 
-        SAVE(B2w);
-        SAVE(B2p);
-        SAVE(B2wp);
         output.close();
 #undef SAVE
     }
@@ -160,53 +271,107 @@ namespace titovdp {
         }
 
         AVG(S0w);
-        AVG(S0wd);
         AVG(S0p);
-        AVG(S0pd);
-        AVG(S0wp);
-
         AVG(S1w);
         AVG(S1p);
-        AVG(S1wp);
-
         AVG(B0w);
-        AVG(B0wd);
         AVG(B0p);
-        AVG(B0pd);
-        AVG(B0wp);
 
-        AVG(HS0w);
-        AVG(HS0p);
-        AVG(HS0wp);
+        // unigram contexts
+        // z contexts:
+        AVG(S0iw);
+        AVG(S0iw);
+        AVG(S0iw);
+        AVG(S0iw);
 
+        AVG(S0iwS0jw);
+        AVG(S0iwS0jw);
+        AVG(S0iwS0jw);
+
+        // j contexts
+        AVG(B0iw);
+        AVG(B0iw);
+        AVG(B0iw);
+        AVG(B0iw);
+
+        AVG(B0iwB0jw);
+        AVG(B0iwB0jw);
+        AVG(B0iwB0jw);
+
+        // z contexts:
+        AVG(S0ip);
+        AVG(S0ip);
+        AVG(S0ip);
+        AVG(S0ip);
+
+        AVG(S0ipS0jp);
+        AVG(S0ipS0jp);
+        AVG(S0ipS0jp);
+
+        // j contexts
+        AVG(B0ip);
+        AVG(B0ip);
+        AVG(B0ip);
+        AVG(B0ip);
+
+        AVG(B0ipB0jp);
+        AVG(B0ipB0jp);
+        AVG(B0ipB0jp);
+
+
+        // bigrams
+        // z + j
         AVG(S0wB0w);
-        AVG(S0wB0wd);
-        AVG(S1wB0w);
-
         AVG(S0wB0p);
         AVG(B0wS0p);
+        AVG(S0pB0p);
+        AVG(S0wB0wS0p);
+        AVG(S0wB0wB0p);
+        AVG(S0wS0pB0p);
+        AVG(B0wS0pB0p);
+        AVG(S0wB0wS0pB0p);
 
+        // z + j + dis
+        AVG(S0wB0wD);
+        AVG(S0wB0pD);
+        AVG(B0wS0pD);
+        AVG(S0pB0pD);
+
+        // y + j
+        AVG(S1wB0w);
         AVG(S1wB0p);
         AVG(B0wS1p);
-
-        AVG(S0pB0p);
-        AVG(S0pB0pd);
         AVG(S1pB0p);
+        AVG(S1wB0wS1p);
+        AVG(S1wB0wB0p);
+        AVG(S1wS1pB0p);
+        AVG(B0wS1pB0p);
+        AVG(S1wB0wS1pB0p);
 
-        AVG(S0wS1wB0w);
+        // y + j + dis
+        AVG(S1wB0wD);
+        AVG(S1wB0pD);
+        AVG(B0wS1pD);
+        AVG(S1pB0pD);
 
-        AVG(B0Lw);
-        AVG(B0Lp);
-        AVG(B0Rw);
-        AVG(B0Rp);
+        // z + y
+        AVG(S0wS1w);
+        AVG(S0wS1p);
+        AVG(S1wS0p);
+        AVG(S0pS1p);
+        AVG(S0wS1wS0p);
+        AVG(S0wS1wS1p);
+        AVG(S0wS0pS1p);
+        AVG(S1wS0pS1p);
+        AVG(S0wS1wS0pS1p);
 
-        AVG(B1w);
-        AVG(B1p);
-        AVG(B1wp);
+        // trigram
+        // y + j + z
+        AVG(S0wS1pB0p);
+        AVG(S1wS0pB0p);
+        AVG(B0wS0pS1p);
+        AVG(S0pS1pB0p);
 
-        AVG(B2w);
-        AVG(B2p);
-        AVG(B2wp);
 #undef AVG
     }
 

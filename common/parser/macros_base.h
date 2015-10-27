@@ -43,6 +43,7 @@ typedef BiGram<gtype> WordPOSTag;
 typedef BiGram<gtype> WordSetOfDepLabels;
 typedef BiGram<gtype> POSTagSetOfDepLabels;
 
+typedef TriGram<gtype> ThreeWords;
 typedef TriGram<gtype> POSTagSet3;
 typedef TriGram<gtype> WordWordPOSTag;
 typedef TriGram<gtype> WordPOSTagPOSTag;
@@ -89,6 +90,7 @@ public:
 };
 
 int encodeLinkDistanceOrDirection(const int &hi, const int &di, bool dir);
+int encodeDistance(int st, int ed);
 
 std::istream &operator>>(std::istream &input, DependencyGraph &graph);
 

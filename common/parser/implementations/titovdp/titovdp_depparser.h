@@ -29,6 +29,7 @@ namespace titovdp {
         void decodeTransitions();
 
     private:
+        PCHashT candidates[MAX_SENTENCE_SIZE];
         WordPOSTag sent[MAX_SENTENCE_SIZE];
         WordPOSTag empty_word, start_word, end_word;
         int sentenceLength;
@@ -42,21 +43,16 @@ namespace titovdp {
         AgendaBeam<SPCPtr, BEAM_SIZE, PtrSPCCompare> chart_mem[MAX_SENTENCE_SIZE + 5][MAX_SENTENCE_SIZE + 5];
         AgendaBeam<SPCPtr, BEAM_SIZE, PtrSPCCompare> (*chart)[MAX_SENTENCE_SIZE];
 
-        int chart_sortbyx_mem[MAX_SENTENCE_SIZE + 5][MAX_SENTENCE_SIZE + 5][BEAM_SIZE];
-        int (*chart_sortbyx)[MAX_SENTENCE_SIZE][BEAM_SIZE];
-
-        int chart_sortbyz_mem[MAX_SENTENCE_SIZE + 5][MAX_SENTENCE_SIZE + 5][BEAM_SIZE];
-        int (*chart_sortbyz)[MAX_SENTENCE_SIZE][BEAM_SIZE];
-
         int nRound;
 
         void addItem(PCHashT &candidates, const PushComputation &pc, const ScoreInformation &score_info);
+        void updateItem(PCHashT &candidates, const PushComputation &pc, const ScoreInformation &score_info);
 
         void gatherBeam(const PCHashT &candidates, int i, int j);
 
         tscore getOrUpdateScore(const PushComputation &pc, Transition t, tscore amount);
 
-        tscore getOrUpdateScore(const PushComputation &pc1, const PushComputation &pc2, tscore amount);
+        tscore getOrUpdateScore(const PushComputation &pc1, const PushComputation &pc2, Transition t, tscore amount);
 
         const WordPOSTag &getWordinStack(int index);
 
@@ -65,6 +61,7 @@ namespace titovdp {
         bool getGoldTransitions(const DependencyGraph &gold);
 
         void traversePC(cSPCPtr pc);
+        bool actionApplicable(const PushComputation & pc, Transition t);
 
     };
 }

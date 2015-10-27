@@ -22,44 +22,39 @@ namespace titovdp {
     }
 
     static PushComputation traverse(DeductionSet &retval, const std::vector<Transition> &seq,
-                                    const std::vector<int> &depth, int start, int end, int x, int i) {
-        if (start == end) {
-            Deduction d;
-            d.pc1 = shift_pc(x, i);
-            d.type = SHIFT;
-            retval.insert(d);
-            return d.pc1;
-        }
+                                    const std::vector<int> &depth, int start, int end,
+                                    const PushComputation* predecessor) {
         Deduction d;
-        d.type = seq[end];
-        switch (seq[end]) {
-            case LEFT_ARC:
-            case RIGHT_ARC:
-            case SWAP:
-                d.pc1 = traverse(retval, seq, depth, start, end - 1, x, i);
-                retval.insert(d);
-                return singleton_pc(d.pc1, seq[end]);
-                break;
-            case REDUCE:
-                int k;
-                for (k = end - 1; k >= start; k--) {
-                    if (depth[k] == depth[end]) {
-                        break;
-                    }
+        Transition act = seq[end];
+        d.type = act;
+        if(is_shift(act)) {
+            if(predecessor == nullptr) {
+                PushComputation pc;
+                pc.i = -1, pc.j = 0, pc.y = -1, pc.z = -1;
+                pc.jls = pc.yls = pc.yrs = pc.zls = pc.zrs = -1;
+                return pc;
+            }
+            d.pc1 = *predecessor;
+            retval.insert(d);
+            return d.pc1 = shift_pc(*predecessor, act);
+        } else if(is_reduce(act)) {
+            int k;
+            for (k = end - 1; k >= start; k--) {
+                if (depth[k] == depth[end]) {
+                    break;
                 }
-                assert(k >= start);
-                d.pc1 = traverse(retval, seq, depth, start, k, x, i);
-                d.pc2 = traverse(retval, seq, depth, k + 1, end - 1, d.pc1.z, d.pc1.j);
-                d.type = REDUCE;
-                retval.insert(d);
-                return reduce_pc(d.pc1, d.pc2);
-                break;
-            default:
-                std::cerr << "You are doomed in LINE" << __LINE__ << std::endl;
-                return PushComputation();
+            }
+            assert(k >= start);
+            d.pc1 = traverse(retval, seq, depth, start, k, predecessor);
+            d.pc2 = traverse(retval, seq, depth, k + 1, end - 1, &d.pc1);
+            retval.insert(d);
+            return reduce_pc(d.pc1, d.pc2, act);
+        } else {
+            d.pc1 = traverse(retval, seq, depth, start, end - 1, predecessor);
+            retval.insert(d);
+            return swap_pc(d.pc1, act);
         }
     }
-
 
     bool DepParser::getGoldTransitions(const DependencyGraph &gold) {
         goldDeductions.clear();
@@ -86,6 +81,7 @@ namespace titovdp {
         seq.push_back(SHIFT);      // virtual shift
         depth.push_back(1);
 
+        int arc_mark = 0;           // -1 : right_arc, 1 : left_arc, 0 : nothing
         // std::cerr<<"start"<<std::endl;
         int ptr = 0, success = 1;
         while (ptr <= gold.num_words || !stack.empty()) {
@@ -100,8 +96,7 @@ namespace titovdp {
             if (!stack.empty()) {
                 int &z = stack[stack.size() - 1];
                 if (ptr <= gold.num_words && graph[z][ptr]) {
-                    seq.push_back(RIGHT_ARC);
-                    depth.push_back(stack.size() + 1);
+                    arc_mark = -1;
                     // std::cerr<<"want: "<<z<<" "<<ptr<<", got: "<<arcs[z].front()<<"\n";
                     // assert(arcs[z].front() == ptr);
                     if (arcs[z].front() != ptr) {
@@ -112,8 +107,7 @@ namespace titovdp {
                     graph[z][ptr] = 0;
                 }
                 if (ptr <= gold.num_words && graph[ptr][z]) {
-                    seq.push_back(LEFT_ARC);
-                    depth.push_back(stack.size() + 1);
+                    arc_mark = 1;
                     // std::cerr<<"want: "<<z<<" "<<ptr<<", got: "<<arcs[z].front()<<"\n";
                     // assert(arcs[z].front() == ptr);
                     if (arcs[z].front() != ptr) {
@@ -124,7 +118,14 @@ namespace titovdp {
                     graph[ptr][z] = 0;
                 }
                 if (arcs[z].empty()) {
-                    seq.push_back(REDUCE);
+                    if(arc_mark == 1) {
+                        seq.push_back(LA_REDUCE);
+                    } else if(arc_mark == -1) {
+                        seq.push_back(RA_REDUCE);
+                    } else {
+                        seq.push_back(REDUCE);
+                    }
+                    arc_mark = 0;
                     stack.pop_back();
                     depth.push_back(stack.size() + 1);
                     continue;
@@ -133,7 +134,14 @@ namespace titovdp {
                 if (stack.size() >= 2) {
                     int &y = stack[stack.size() - 2];
                     if (precedes(arcs[y], arcs[z])) {
-                        seq.push_back(SWAP);
+                        if(arc_mark == 1) {
+                            seq.push_back(LA_SWAP);
+                        } else if(arc_mark == -1) {
+                            seq.push_back(RA_SWAP);
+                        } else {
+                            seq.push_back(SWAP);
+                        }
+                        arc_mark = 0;
                         depth.push_back(stack.size() + 1);
                         std::swap(z, y);
                         continue;
@@ -145,7 +153,14 @@ namespace titovdp {
                     success = 0;
                     break;
                 }
-                seq.push_back(SHIFT);
+                if(arc_mark == 1) {
+                    seq.push_back(LA_SHIFT);
+                } else if(arc_mark == -1) {
+                    seq.push_back(RA_SHIFT);
+                } else {
+                    seq.push_back(SHIFT);
+                }
+                arc_mark = 0;
                 stack.push_back(ptr);
                 depth.push_back(stack.size() + 1);
                 ptr++;
@@ -158,7 +173,7 @@ namespace titovdp {
         }
 
         goldDeductions.clear();
-        traverse(goldDeductions, seq, depth, 0, seq.size() - 1, -1, -1);
+        traverse(goldDeductions, seq, depth, 0, seq.size() - 1, nullptr);
 
 #if 0
         std::cout<< sentenceLength<<std::endl;
